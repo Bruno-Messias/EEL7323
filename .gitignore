@@ -37,3 +37,6 @@
 *.user
 /Tutorial/CalculatorTutorial/Debug
 *.sln
+/Tutorial/DiceProbability/.vs/DiceProbability/v16
+/Tutorial/DiceProbability/Debug
+/Tutorial/DiceProbability/DiceProbability/Debug
