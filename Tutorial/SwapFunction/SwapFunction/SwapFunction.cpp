@@ -16,7 +16,7 @@ inline void swap(int& i, int& j) //inline is more efficint
     j = temp;
 }
 
-inline void swap(double& i, double& j)
+inline void swap(double& i, double& j)//! only use inline for small function
 {
     double temp = i;
     i = j;
