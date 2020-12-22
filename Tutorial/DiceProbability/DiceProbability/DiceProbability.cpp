@@ -8,13 +8,14 @@
 #include <ctime>    //Time C library   
 
 using namespace std; //namespace for standart library
+//encapsulation are good to work in any device
 
 const int sides = 6; //Declare an int constant
-inline int r_sides() { return (rand() % sides + 1); }; //declare a a not fuction called(macro function), without need to call - stack (better run time)
+inline int r_sides() { return (rand() % sides + 1); }; //declare a a not fuction called(macro function but better), without need to call - stack (better run time)
 
 int main()
 {
-    const int n_dice = 2; //2 dice thrown
+    const int n_dice = 2; //2 dice thrown const are good to checks in the code
     int d1, d2; //declare int variables
     srand(clock()); //intitialize seed generator(monte carlo simulation)
 
