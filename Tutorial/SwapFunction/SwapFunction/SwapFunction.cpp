@@ -4,6 +4,7 @@
 */
 
 #include <iostream>
+#include <complex>
 
 using namespace std;
 
@@ -25,18 +26,35 @@ inline void swap(double& i, double& j)//! only use inline for small function
 
 //! C++ has overloading(can have two function with the same name without problems) and call by reference
 
+//! Adding template(generic function)
+
+template <class T> //! capitalized T is a convencion (meta variable)
+
+inline void swap(T& d, T& s)
+{
+    T temp = d;
+    d = s;
+    s = temp;
+}
+
 int main()
 {
     int m = 5, n = 10;
     double x = 5.3, y = 10.6;
+
+    complex<double> r(2.4, 3.5), s(3.4, 6.7);
 
     cout << "inputs: " << m << "," << n << endl;
     swap(m, n);
     cout << "outputs: " << m << "," << n << endl;
 
     cout << "double inputs: " << x << "," << y << endl;
-    swap(x, y); //! C understand the signature name of the type of the variable
+    swap(x, y);
     cout << "double outputs: " << x << "," << y << endl;
+
+    cout << "complex inputs: " << r << "," << s << endl;
+    swap(r, s);
+    cout << "complex outputs: " << r << "," << s << endl;
 
     return 0;
 }
