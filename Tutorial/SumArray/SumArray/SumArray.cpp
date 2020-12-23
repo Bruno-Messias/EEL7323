@@ -46,7 +46,7 @@ int main()
 	double b[] = { 2.1, 2.2, 2.3 };
 	double c[] = { 0.0, 0.0, 0.0 };
 
-	std::cout << ::sum(a, 3) << std::endl;
+	std::cout << ::sum(a, 3) << std::endl;.github
 	std::cout << ::sum(b, 3) << std::endl;
 
 	::copy(a, c, 3);
