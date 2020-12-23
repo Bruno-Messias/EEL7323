@@ -52,7 +52,7 @@ int main()
 	::copy(a, c, 3);
 
 	std::cout << "Copy template" << std::endl;
-	std::cout << ::sum(c,3,0.6) << std::endl; //trnaforming a into double and sum
+	std::cout << ::sum(c,3,0.6) << std::endl; //transforming a array into double and sum
 
 	return 0;
 }
