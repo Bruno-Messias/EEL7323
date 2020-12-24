@@ -8,17 +8,19 @@
 class point
 {
 //public://simple tasks
+//    point(double x = 0.0, double y = 0.0): x(x), y(y) {} //default Constructor sytax -> class_name():initializer list - Uses overloading, its better!
+//    //point(): x(0.0), y(0.0) {} //Has initialized values
 //    double getx() { return x; }//inline
 //    void setx(double v) { x = v; }//mutator
 //    double gety() { return y; }
 //    void sety(double v) { y = v; }
-
+//      
 //private://hide -> representation
 //    double x, y;
 
 public:
     double x, y;
-};
+}; 
 //! they are three keywords: public(open box), private(black box) and protected(inherance)
 
 point operator+ (point& p1, point& p2)
