@@ -27,6 +27,7 @@ point operator+ (point& p1, point& p2)
     return sum;
 }
 
+//! is good to every operator overloading its useful make a new << operator overloading of your new type
 std::ostream& operator<< (std::ostream& out, const point& p)
 {
     out << "(" << p.x << "," << p.y << ")";
@@ -39,9 +40,9 @@ std::ostream& operator<< (std::ostream& out, const point& p)
 
 int main()
 {
-    point a = { 3.5, 2.5 }, b = { 2.5, 4.5 }, c;
+    point a = { 3.5, 2.5 }, b = { 2.5, 4.5 }, c;//constructor?
     std::cout << "a = " << a << " b = " << b << std::endl;
     std::cout << "sum = " << a + b << std::endl;
-
+    
     return 0;
 }
