@@ -7,19 +7,19 @@
 
 class point
 {
-//public://simple tasks
-//    point(double x = 0.0, double y = 0.0): x(x), y(y) {} //default Constructor sytax -> class_name():initializer list - Uses overloading, its better!
-//    //point(): x(0.0), y(0.0) {} //Has initialized values
-//    double getx() { return x; }//inline
-//    void setx(double v) { x = v; }//mutator
-//    double gety() { return y; }
-//    void sety(double v) { y = v; }
-//      
-//private://hide -> representation
-//    double x, y;
-
-public:
+public://simple tasks
+    point(double x = 0.0, double y = 0.0): x(x), y(y) {} //default Constructor sytax -> class_name():initializer list - Uses overloading, its better!
+    //point(): x(0.0), y(0.0) {} //Has initialized values
+    double getx() { return x; }//inline
+    void setx(double v) { x = v; }//mutator
+    double gety() { return y; }
+    void sety(double v) { y = v; }
+      
+private://hide -> representation
     double x, y;
+
+//public:
+//    double x, y;
 }; 
 //! they are three keywords: public(open box), private(black box) and protected(inherance)
 
@@ -43,8 +43,14 @@ std::ostream& operator<< (std::ostream& out, const point& p)
 int main()
 {
     point a = { 3.5, 2.5 }, b = { 2.5, 4.5 }, c;//constructor?
-    std::cout << "a = " << a << " b = " << b << std::endl;
     std::cout << "sum = " << a + b << std::endl;
+    std::cout << "a = " << a << " b = " << b << std::endl;
+
+    //point s;
+    //double d = 3.5;
+
+    //s = d; //implicit convertion -> not a good idea
+    //s = static_cast<point>(d);// explicit convertion
     
     return 0;
 }
