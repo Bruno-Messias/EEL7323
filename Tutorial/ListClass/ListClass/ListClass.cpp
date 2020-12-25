@@ -4,7 +4,7 @@
 */
 
 #include <iostream>
-//Studing this librarys
+//Studing this librarys STl
 #include <vector> 
 #include <list>
 
