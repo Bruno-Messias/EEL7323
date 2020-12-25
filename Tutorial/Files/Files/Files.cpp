@@ -6,6 +6,7 @@ Author : Bruno c.Messias
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 
 int main()
 {
@@ -59,10 +60,10 @@ int main()
 
     ////! other way to read a a file(by lines)
     //
-    //std::string line;
-    //getline(file, line); //? not working...
+    std::string line;
+    getline(file, line); //? not working...
 
-    //std::cout << line << "\n";
+    std::cout << line << "\n";
 
     return 0;
 }
