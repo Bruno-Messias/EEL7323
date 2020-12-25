@@ -1,4 +1,4 @@
-/* ListClass.cpp : Creating a list class objet
+/* ListClass.cpp : Creating a list class objet -> not working
 * Date: 24 / 12 / 2020
 * Author : Bruno C.Messias
 */
