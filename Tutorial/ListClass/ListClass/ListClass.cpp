@@ -4,6 +4,9 @@
 */
 
 #include <iostream>
+//Studing this librarys
+#include <vector> 
+#include <list>
 
 class list {
 public:
