@@ -58,23 +58,36 @@ public:
 		else
 			this->status = "all";
 	}
+
+	friend void output_status(User user); // can acess the private value by using this void output status -> is a friend function
+
+	friend std::ostream& operator << (std::ostream& out, const User user); //now this function can read the private values
+
+	friend std::istream& operator >> (std::istream& in, User& user);
+
 };
 
 int User::user_count = 0; //Cant initialized inside the class;
 
-std::ostream& operator << (std::ostream& out,  User user)
+void output_status(User user)
+{
+	std::cout << user.status;
+}
+
+std::ostream& operator << (std::ostream& out, const User user)
 {
 	out <<	"Fist Name: " << user.first_name << "\n"
 			"Last Name: " << user.last_name << "\n"
-			"Staus: " << user.get_status() << "\n";
+			"Status: " << user.status << "\n"; //Now this work beacuse the friend function
+			//"Staus: " << user.get_status() << "\n"; //not work with const User
 	
 	return out;
 }
 
 std::istream& operator >> (std::istream &in, User &user)
 {
-	std::cout << "Insert First Name - Last Name:  ";
-	in >> user.first_name >> user.last_name;
+	std::cout << "Insert First Name - Last Name - status:  ";
+	in >> user.first_name >> user.last_name >> user.status;
 	return in;
 }
 
@@ -110,12 +123,13 @@ int main()
 
 	std::cout << User::get_user_count() << std::endl;
 	
-	new_user.~User();
+	//new_user.~User(); //Using destructor
 
 	std::cout << User::get_user_count() << std::endl;
 
-	User new_user1;
+	output_status(new_user);
 
+	User new_user1;
 	std::cin >> new_user1;
 
 	/*
@@ -123,7 +137,7 @@ int main()
 	new_user1.last_name = "MARIO";
 	*/
 
-	new_user1.set_status("gold");
+	//new_user1.set_status("gold");
 	
 	std::cout << std::endl << new_user1 << std::endl;
 
