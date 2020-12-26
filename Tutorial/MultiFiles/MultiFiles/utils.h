@@ -17,7 +17,26 @@ namespace utilz
 
     double pow(double base, int pow = 2);
 
-    void swap(int& a, int& b);
+    // Adding template function
+    template <typename T>
+    void swap(T& a, T& b)
+    {
+        T temp = a;
+        a = b;
+        b = temp;
+    }
+
+    // Adding template overloading function
+    template <typename T>
+    void swap(T a[], T b[], int size)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            T temp = a[i];
+            a[i] = b[i];
+            b[i] = temp;
+        }
+    }
 }
 
 #endif // !UTILS
