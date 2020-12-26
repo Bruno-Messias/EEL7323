@@ -14,6 +14,7 @@
 //	private:
 //		std::string status = "all";//default value
 //};
+
 class User //In classes by default the value is private
 {
 	std::string status = "all"; // default value
@@ -28,9 +29,17 @@ public:
 		this->first_name = first_name;
 		this->last_name = last_name;
 	}
+	~User() { std::cout << "Destructor\n"; }
 	std::string get_status() { return status; }
 
-	~User() { std::cout << "Destructor\n"; }
+	void set_status(std::string status) 
+	{ 
+		if (status == "gold" || status == "silver" || status == "bronze")
+			this->status = status;
+		else
+			this->status = "all";
+	}
+
 };
 
 
@@ -56,6 +65,13 @@ int main()
 	User new_user("me", "today");
 
 	std::cout << new_user.first_name << " " << new_user.last_name << std::endl;
+
+	std::cout << new_user.get_status() << std::endl;
+
+	new_user.set_status("gold");
+	std::cout << new_user.get_status() << std::endl;
+	new_user.set_status("tacos");
+	std::cout << new_user.get_status() << std::endl;
 
 	return 0;
 }
