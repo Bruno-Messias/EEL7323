@@ -1,5 +1,6 @@
 #ifndef USER_CLASS
 #define USER_CLASS
+
 class User //In classes by default the value is private
 {
 	static int user_count; //Static is a feature in all object of a class

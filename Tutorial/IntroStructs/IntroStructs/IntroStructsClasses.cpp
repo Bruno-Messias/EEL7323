@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "teacher.h"
 #include "User.h"
 
 //struct User //! In structs by the default the value is public
@@ -65,6 +66,11 @@ int main()
 	//new_user1.set_status("gold");
 	
 	std::cout << std::endl << new_user1 << std::endl;
+	//adding subclass teacher
+
+	Teacher teacher;
+
+	teacher.output();
 
 	return 0;
 }

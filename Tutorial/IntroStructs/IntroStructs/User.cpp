@@ -17,7 +17,7 @@ User::User() //Constructor
 
 User::User(std::string first_name, std::string last_name) //Overloading constructor
 {
-		//std::cout << "New User\n";
+		std::cout << "New User\n";
 		user_count++;
 		this->first_name = first_name;
 		this->last_name = last_name;
