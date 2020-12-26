@@ -17,31 +17,50 @@
 
 class User //In classes by default the value is private
 {
+	static int user_count; //Static is a feature in all object of a class
 	std::string status = "all"; // default value
 
 public:
+
+	static int get_user_count()
+	{
+		return user_count;
+	}
+
 	std::string first_name;
 	std::string last_name;
-	User() { std::cout << "New User\n"; }
-	User(std::string first_name, std::string last_name)
+
+	User() //Constructor
+ 
+	{ 
+		std::cout << "New User\n"; 
+		user_count++;
+	} 	
+	User(std::string first_name, std::string last_name) //Overloading constructor
 	{
 		std::cout << "New User\n";
+		user_count++;
 		this->first_name = first_name;
 		this->last_name = last_name;
 	}
-	~User() { std::cout << "Destructor\n"; }
-	std::string get_status() { return status; }
+	~User() //Destructor 
+	{ 
+		std::cout << "Destructor\n";
+		user_count--;
+	} 
 
-	void set_status(std::string status) 
+	std::string get_status() { return status; } //Getting a private variable
+
+	void set_status(std::string status)  //Setting a private variable
 	{ 
 		if (status == "gold" || status == "silver" || status == "bronze")
 			this->status = status;
 		else
 			this->status = "all";
 	}
-
 };
 
+int User::user_count = 0; //Cant initialized inside the class;
 
 int main()
 {
@@ -72,6 +91,12 @@ int main()
 	std::cout << new_user.get_status() << std::endl;
 	new_user.set_status("tacos");
 	std::cout << new_user.get_status() << std::endl;
+
+	std::cout << User::get_user_count() << std::endl;
+	
+	new_user.~User();
+
+	std::cout << User::get_user_count() << std::endl;
 
 	return 0;
 }
