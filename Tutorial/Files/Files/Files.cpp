@@ -60,10 +60,7 @@ int main()
 
     ////! other way to read a a file(by lines)
     //
-    std::string line;
-    getline(file, line); 
 
-    std::cout << line << "\n";
 
     return 0;
 }
