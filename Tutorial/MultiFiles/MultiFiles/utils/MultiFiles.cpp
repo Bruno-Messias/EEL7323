@@ -14,7 +14,7 @@ int main()
     std::cout << area(ret.length, ret.width) << "\n";
     std::cout << area(ret) << "\n";
     std::cout << pow(3,3) << "\n";
-    std::cout << pow(3) << "\n";
+    std::cout << pow(3) << "\n";x''
 
     
     return 0;
