@@ -4,6 +4,7 @@
 */
 #include <iostream>
 #include <string>
+#include <vector>
 
 //struct User //! In structs by the default the value is public
 //{
@@ -20,9 +21,18 @@ class User //In classes by default the value is private
 public:
 	std::string first_name;
 	std::string last_name;
+	User() { std::cout << "New User\n"; }
+	User(std::string first_name, std::string last_name)
+	{
+		std::cout << "New User\n";
+		this->first_name = first_name;
+		this->last_name = last_name;
+	}
 	std::string get_status() { return status; }
 
+	~User() { std::cout << "Destructor\n"; }
 };
+
 
 int main()
 {
@@ -32,10 +42,21 @@ int main()
 	//me.status = "all";//Can't acessed need a return value need a get
 
 
-	std::cout << "First Nams: " << me.first_name << std::endl;
+	std::cout << "First Name: " << me.first_name << std::endl;
 	std::cout << "Status: " << me.get_status() << std::endl;
 
-	
+	//User user;
+	//user.first_name = "Me";
+
+	//std::vector<User> users;
+	////users.push_back(user);
+
+	//std::cout << "\n" << users[0].first_name << std::endl;
+
+	User new_user("me", "today");
+
+	std::cout << new_user.first_name << " " << new_user.last_name << std::endl;
+
 	return 0;
 }
 
