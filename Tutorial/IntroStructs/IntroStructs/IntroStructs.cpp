@@ -33,19 +33,19 @@ public:
 	User() //Constructor
  
 	{ 
-		std::cout << "New User\n"; 
+		//std::cout << "New User\n"; 
 		user_count++;
 	} 	
 	User(std::string first_name, std::string last_name) //Overloading constructor
 	{
-		std::cout << "New User\n";
+		//std::cout << "New User\n";
 		user_count++;
 		this->first_name = first_name;
 		this->last_name = last_name;
 	}
 	~User() //Destructor 
 	{ 
-		std::cout << "Destructor\n";
+		//std::cout << "Destructor\n";
 		user_count--;
 	} 
 
@@ -61,6 +61,22 @@ public:
 };
 
 int User::user_count = 0; //Cant initialized inside the class;
+
+std::ostream& operator << (std::ostream& out,  User user)
+{
+	out <<	"Fist Name: " << user.first_name << "\n"
+			"Last Name: " << user.last_name << "\n"
+			"Staus: " << user.get_status() << "\n";
+	
+	return out;
+}
+
+std::istream& operator >> (std::istream &in, User &user)
+{
+	std::cout << "Insert First Name - Last Name:  ";
+	in >> user.first_name >> user.last_name;
+	return in;
+}
 
 int main()
 {
@@ -97,6 +113,19 @@ int main()
 	new_user.~User();
 
 	std::cout << User::get_user_count() << std::endl;
+
+	User new_user1;
+
+	std::cin >> new_user1;
+
+	/*
+	new_user1.first_name = "I'ts ME";
+	new_user1.last_name = "MARIO";
+	*/
+
+	new_user1.set_status("gold");
+	
+	std::cout << std::endl << new_user1 << std::endl;
 
 	return 0;
 }
