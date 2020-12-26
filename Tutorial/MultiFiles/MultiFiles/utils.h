@@ -16,6 +16,8 @@ namespace utilz
     double area(Retangle ret);
 
     double pow(double base, int pow = 2);
+
+    void swap(int& a, int& b);
 }
 
 #endif // !UTILS

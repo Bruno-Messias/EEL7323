@@ -1,5 +1,5 @@
 /* MultiFiles.cpp : Implement multi file compilation
-*  Date: 25/12/2020
+*  Date: 26/12/2020
 *  Author: Bruno C. Messias
 */
 #include <iostream>
@@ -16,6 +16,10 @@ int main()
     std::cout << utilz::pow(3,3) << "\n";
     std::cout << utilz::pow(3) << "\n";
 
+    int a = 10, b = 20;
+
+    utilz::swap(a, b);
+    std::cout << "a = " << a << " b = " << b << "\n";
     
     return 0;
 }
