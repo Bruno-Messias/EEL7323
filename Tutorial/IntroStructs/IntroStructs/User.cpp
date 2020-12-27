@@ -42,6 +42,11 @@ void User::set_status(std::string status)  //Setting a private variable
 		this->status = "all";
 }
 
+void User::output()
+{
+	std::cout << "i'm a user\n";
+}
+
 int User::user_count = 0;
 
 void output_status(User user)

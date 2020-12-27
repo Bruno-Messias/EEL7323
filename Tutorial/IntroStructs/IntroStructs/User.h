@@ -15,6 +15,7 @@ public:
 	~User();
 	std::string get_status();
 	void set_status(std::string status);
+	virtual void output(); //creating a virtual that is udsed in the sub class teacher
 	friend void output_status(User user);
 	friend std::ostream& operator << (std::ostream& out, const User user);
 	friend std::istream& operator >> (std::istream& in, User& user);

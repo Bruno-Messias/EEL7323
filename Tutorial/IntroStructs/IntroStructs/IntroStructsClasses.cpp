@@ -17,6 +17,11 @@
 //		std::string status = "all";//default value
 //};
 
+void do_some(User& user)
+{
+	user.output();
+}
+
 int main()
 {
 	User me;
@@ -71,6 +76,11 @@ int main()
 	Teacher teacher;
 
 	teacher.output();
+
+	//Polymorfism
+
+	User& u = teacher;
+	do_some(u);
 
 	return 0;
 }
