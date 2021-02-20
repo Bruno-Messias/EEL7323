@@ -118,6 +118,11 @@ int main() {
         case 5: //Incluir aluno
             for (int i = 0; i < (MAX+1); i++)
             {
+		if (i == 20) {
+                    std::cout << "\n ------ NÃ£o HÃ¡ vagas -----\n" << std::endl;
+                    break;
+                }
+		    
                 if (cadastroAlunos[i].getNome() == "") {
 
                     std::cout << "Nome: " << std::endl;
@@ -138,11 +143,6 @@ int main() {
 
                     break;
                 }
-
-                if (i == 20) {
-                    std::cout << "\n ------ Não Há vagas -----\n" << std::endl;
-                    break;
-                }
             };
 
             break;
@@ -152,7 +152,7 @@ int main() {
             break;
 
         default:
-            std::cout << "Nenhuma opção selecionada, tente novamente" << std::endl;
+            std::cout << "Nenhuma opÃ§Ã£o selecionada, tente novamente" << std::endl;
             break;
         }
 
