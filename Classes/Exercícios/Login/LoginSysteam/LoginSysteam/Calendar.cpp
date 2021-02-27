@@ -1,26 +1,26 @@
 #include "Calendar.h"
 
-Calendar::Calendar(unsigned int year, unsigned int month, unsigned int day) {
+inline Calendar::Calendar(unsigned int year, unsigned int month, unsigned int day) {
 	this->year = year;
 	this->month = month;
 	this->day = day;
 }
 
-Calendar::~Calendar() { }
+inline Calendar::~Calendar() { }
 
-void Calendar::setCalendar(unsigned int year, unsigned int month, unsigned int day) {
+inline void Calendar::setCalendar(unsigned int year, unsigned int month, unsigned int day) {
 	this->year = year;
 	this->month = month;
 	this->day = day;
 }
 
-void Calendar::readCalendar(unsigned int& year, unsigned int& month, unsigned int& day) {
+inline void Calendar::readCalendar(unsigned int& year, unsigned int& month, unsigned int& day) {
 	year = this->year;
 	month = this->month;
 	day = this->day;
 }
 
-void Calendar::advance() {
+inline void Calendar::advance() {
 	if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) { //leap year
 		if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
 			if (day < 30)

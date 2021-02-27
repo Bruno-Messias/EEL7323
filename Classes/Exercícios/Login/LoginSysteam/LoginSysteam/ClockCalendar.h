@@ -11,14 +11,14 @@ using namespace std;
 
 class ClockCalendar : public Clock, public Calendar {
 public:
-	ClockCalendar(unsigned int year, unsigned int month, unsigned int day, unsigned int hour, unsigned int min, unsigned int sec, bool isPM);
-	~ClockCalendar();
-	void advance();
-	void writeClock();
-	void showClock();
+	inline ClockCalendar(unsigned int year, unsigned int month, unsigned int day, unsigned int hour, unsigned int min, unsigned int sec, bool isPM);
+	inline ~ClockCalendar();
+	inline void advance();
+	inline void writeClock();
+	inline void showClock();
 private:
 	unsigned int year, month, day, hour, min, sec;
-	bool isPM = false;
+	bool isPM;
 };
 
 #endif		// CLOCKCALENDAR

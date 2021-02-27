@@ -2,14 +2,14 @@
 #define CALENDAR
 
 class Calendar {
-protected:
-	int year, month, day;
 public:
-	Calendar(unsigned int year, unsigned int month, unsigned int day);
-	~Calendar();
-	void setCalendar(unsigned int year, unsigned int month, unsigned int day);
-	void readCalendar(unsigned int& year, unsigned int& month, unsigned int& day);
-	void advance();
+	inline Calendar(unsigned int year, unsigned int month, unsigned int day);
+	inline ~Calendar();
+	inline void setCalendar(unsigned int year, unsigned int month, unsigned int day);
+	inline void readCalendar(unsigned int& year, unsigned int& month, unsigned int& day);
+	inline void advance();
+private:
+	unsigned int year, month, day;
 };
 
 #endif		// CALENDAR

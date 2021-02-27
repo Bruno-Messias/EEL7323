@@ -1,29 +1,29 @@
 #include "Clock.h"
 
-Clock::Clock(unsigned int hour, unsigned int min, unsigned int sec, bool isPM) {
+inline Clock::Clock(unsigned int hour, unsigned int min, unsigned int sec, bool isPM) {
 	this->hour = hour;
 	this->min = min;
 	this->sec = sec;
 	this->isPM = isPM;
 }
 
-Clock::~Clock() { }
+inline Clock::~Clock() { }
 
-void Clock::setClock(unsigned int hour, unsigned int min, unsigned int sec, bool isPM) {
+inline void Clock::setClock(unsigned int hour, unsigned int min, unsigned int sec, bool isPM) {
 	this->hour = hour;
 	this->min = min;
 	this->sec = sec;
 	this->isPM = isPM;
 }
 
-void Clock::readClock(unsigned int& hour, unsigned int& min, unsigned int& sec, bool& isPM) {
+inline void Clock::readClock(unsigned int& hour, unsigned int& min, unsigned int& sec, bool& isPM) {
 	hour = this->hour;
 	min = this->min;
 	sec = this->sec;
 	isPM = this->isPM;
 }
 
-void Clock::advance() {
+inline void Clock::advance() {
 	sec++;
 	if (sec >= 60) {
 		sec = 0;
