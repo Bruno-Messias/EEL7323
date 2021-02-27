@@ -30,3 +30,9 @@ void ClockCalendar::writeClock() {
 	cout << setw(2) << setfill('0') << sec;
 	cout << (isPM ? " pm" : " am") << endl;
 }
+
+void ClockCalendar::showClock() {
+	Calendar::readCalendar(year, month, day);
+	Clock::readClock(hour, min, sec, isPM);
+	ClockCalendar::writeClock();
+}

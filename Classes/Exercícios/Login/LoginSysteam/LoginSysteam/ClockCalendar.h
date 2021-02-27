@@ -15,6 +15,10 @@ public:
 	~ClockCalendar();
 	void advance();
 	void writeClock();
+	void showClock();
+private:
+	unsigned int year{}, month{}, day{}, hour{}, min{}, sec{};
+	bool isPM = false;
 };
 
 #endif		// CLOCKCALENDAR

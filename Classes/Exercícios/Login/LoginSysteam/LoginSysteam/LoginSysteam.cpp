@@ -43,9 +43,6 @@ int main()
 {
 	ClockCalendar cc(2021, 27, 2, 9, 34, 40, true);
 
-	unsigned int year, month, day, hour, min, sec;
-	bool isPM;
-
 	bool secondAdvanced = false;
 	time_t now, elapsed;
 	double seconds;
@@ -59,9 +56,7 @@ int main()
 			if (seconds == 1) {
 				secondAdvanced = true;
 				cc.advance();
-				cc.readCalendar(year, month, day);
-				cc.readClock(hour, min, sec, isPM);
-				cc.writeClock();
+				cc.showClock();
 			}
 		}
 	}
