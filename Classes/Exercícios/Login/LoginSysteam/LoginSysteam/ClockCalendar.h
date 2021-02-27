@@ -12,7 +12,6 @@ using namespace std;
 class ClockCalendar : public Clock, public Calendar {
 public:
 	inline ClockCalendar(unsigned int year, unsigned int month, unsigned int day, unsigned int hour, unsigned int min, unsigned int sec, bool isPM);
-	inline ~ClockCalendar();
 	inline void advance();
 	inline void writeClock();
 	inline void showClock();

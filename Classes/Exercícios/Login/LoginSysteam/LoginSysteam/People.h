@@ -36,7 +36,8 @@ inline void Pessoa::readBirthday(unsigned int& day, unsigned int& month, unsigne
 }
 
 class Aluno: public Pessoa {
-	int matr;
+	int matr, matrProf;
+	unsigned int dia, mes, ano, hora;
 	float n1,n2;
 public:
 	inline void setMatr(int matr);
@@ -46,6 +47,8 @@ public:
 	inline float getN1();
 	inline float getN2();
 	inline float calcMedia();
+	inline void setData(unsigned int dia, unsigned int mes, unsigned int ano, unsigned int hora);
+	inline void setProf(int matrProf);
 };
 
 inline void Aluno::setMatr(int matr) {
@@ -66,8 +69,17 @@ inline float Aluno::getN1() {
 inline float Aluno::getN2() {
 	return n2;
 }
-float Aluno::calcMedia() {
+inline float Aluno::calcMedia() {
 	return (n1 + n2) / 2;
+}
+inline void Aluno::setData(unsigned int dia, unsigned int mes, unsigned int ano, unsigned int hora) {
+	this->dia = dia;
+	this->mes = mes;
+	this->ano = ano;
+	this->hora = hora;
+}
+inline void Aluno::setProf(int matrProf) {
+	this->matrProf = matrProf;
 }
 
 class Professor: public Pessoa {

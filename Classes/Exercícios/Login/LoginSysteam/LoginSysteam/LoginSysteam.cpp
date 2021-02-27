@@ -47,11 +47,13 @@ int main()
 	ClockCalendar cc(2021, 27, 2, 9, 34, 40, true);
 
 	bool secondAdvanced = false;
+    bool isPM;
 	time_t now, elapsed;
 	double seconds;
     int opcao, matr;
+    unsigned int dia, mes, ano, chDay, chMonth, chYear, chHour,min,sec;
     float n1, n2;
-    string name;
+    string nome;
     VetAluno CadAlunos;
 
 	while (true) {
@@ -83,17 +85,21 @@ int main()
             //Switch para direcionar a escolha aos metodos da classe CadAlunos
             switch (opcao) {
                case 1:
-
                     break;
                case 2:
 
                    break;
                case 3:
                    cout << "\nDigite a matricula: "; cin >> matr;
-                   Cout << "Digite o Nome:"; cin >> nome;
+                   cout << "Digite o Nome: "; cin >> nome;
+                   cout << "DIgite a data de Nascimento(dia|mes|ano): "; cin >> dia; cin >> mes; cin >> ano;
                    cout << "Digite a nota 1: "; cin >> n1;
                    cout << "Digite a nota 2: "; cin >> n2;
-                   CadAlunos.inclui(matr, n1, n2);
+
+                   cc.readClock(chHour, min, sec,isPM);
+                   cc.readCalendar(chYear, chMonth, chDay);
+
+                   CadAlunos.inclui(nome, dia, mes, ano,matr, n1, n2, chDay,chMonth,chYear,chHour);
                    break;
                case 4:
                    cout << "\nDigite a matricula do aluno a excluir: "; cin >> matr;

@@ -5,6 +5,7 @@ VetAluno::VetAluno() {
     for (int i = 0; i < n; i++) {
         valido[i] = 0;            // Liberar a escrita no vetor vAlunos
         vAlunos[i].setMatr(-1);   // Para evitar problemas de matricula duplicada
+
     }
 }
 // Metodo para a listagem dos alunos da turma
@@ -19,7 +20,8 @@ void VetAluno::listaVet() {
     }
 }
 // Metodo para a inclusao de alunos
-void VetAluno::inclui(int matr, float n1, float n2) {
+void VetAluno::inclui(string name, unsigned int day, unsigned int month, unsigned int year, int matr, float n1, float n2,
+                        unsigned int changedDay, unsigned int changedMonth, unsigned int changedYear, unsigned int changedHour) {
     int i = 0;
     int guardaPosicao;
     bool sai = false;
@@ -44,6 +46,12 @@ void VetAluno::inclui(int matr, float n1, float n2) {
         vAlunos[guardaPosicao].setMatr(matr);
         vAlunos[guardaPosicao].setN1(n1);
         vAlunos[guardaPosicao].setN2(n2);
+        vAlunos[guardaPosicao].setBirthday(day, month, year);
+        vAlunos[guardaPosicao].setName(name);
+        vAlunos[guardaPosicao].setData(changedDay, changedMonth, changedYear, changedHour);
+        //vAlunos[guardaPosicao].setProf(matrProf); 
+        //TODO: adicionar matricula do professor logado
+
         valido[guardaPosicao] = 1; // Indica o preenchimeto de um objeto
     }
 }
@@ -67,9 +75,14 @@ void VetAluno::exclui(int matr) {
 void VetAluno::consulta(int matr) {
     bool found = 0;
     int i = 0;
+    unsigned int dia, mes, ano;
+
     while (!found && i < n) {
         if (matr == vAlunos[i].getMatr()) {
             found = 1;
+            cout << "Nome: " << vAlunos[i].getName() << endl;
+            vAlunos[i].readBirthday(dia, mes, ano);
+            cout << "Data de Nascimento: " << dia << "|" << mes << "|" << ano << endl;
             cout << "Nota 1: " << vAlunos[i].getN1() << endl;
             cout << "Nota 2: " << vAlunos[i].getN2() << endl;
             cout << "Media final: " << vAlunos[i].calcMedia() << endl << endl;
