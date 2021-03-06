@@ -22,7 +22,6 @@ void vending_machine::Stash_add() // adiciona dinheiro à maquina conforme entrad
         input_100 = false;
     }
 }
-
 void vending_machine::FSM()
 {
     switch (money_stash) {

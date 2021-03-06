@@ -18,12 +18,43 @@ interface_leon::interface_leon() // construtor: inicializa o objeto com as variá
 interface_leon::~interface_leon() { }
 void interface_leon::Display(void)
 {
-    //TODO: Implementar Saidas da LEON
-}
+    *direction = 0xffffffff; //Liberando todas as saidas;
+    switch (vending_machine::money_out)
+    {
+    case 25:
+        *output = LD0_HIGH(output); //Indica que deve devolver 25 centavos
+        break;
+    case 50:
+        *output = LD1_HIGH(output); //Indica que deve devolver 50 centavos
+        break;
+    case 100:
+        *output = LD2_HIGH(output); //Indica que deve devolver 1 real
+        break;
+    default:
+        *output = LD0_LOW(output);
+        *output = LD1_LOW(output);
+        *output = LD2_LOW(output);
+        break;
+    }
 
+    if (vending_machine::soda == "MEET")
+        *output = LD3_HIGH(output); //Indica que foi liberado MEET
+    else 
+        *output = LD3_LOW(output);
+
+    if (vending_machine::soda == "ETIRPS")
+        *output = LD4_HIGH(output); //India que foi liberado ETIRPS
+    else
+        *output = LD4_LOW(output);
+}
 void interface_leon::Inputs()
 {
-    //TODO: Implementar Saida da Leon
+    //vending_machine::input_a = //button(a);
+    //vending_machine::input_b = //button;
+    //vending_machine::input_d = //button;
+    //vending_machine::input_25 = //button;
+    //vending_machine::input_50 = //button;
+    //vending_machine::input_100 = //button;
 }
 
 //! Windowns Interface
@@ -40,7 +71,6 @@ interface_windowns::interface_windowns()
     input_100 = false;
 }
 interface_windowns::~interface_windowns() { }
-
 void interface_windowns::Display(void)
 {
     cout << "------------------------- Maquina de vendas (Interface - Windowns) --------------------------" << endl;
@@ -55,7 +85,6 @@ void interface_windowns::Display(void)
     cout << "Refigerante Escolhido: " << soda << endl;
     cout << endl;
 }
-
 void interface_windowns::Inputs()
 {
     teclado = '0';
