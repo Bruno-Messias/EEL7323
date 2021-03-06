@@ -49,12 +49,18 @@ void interface_leon::Display(void)
 }
 void interface_leon::Inputs()
 {
-    //vending_machine::input_a = //button(a);
-    //vending_machine::input_b = //button;
-    //vending_machine::input_d = //button;
-    //vending_machine::input_25 = //button;
-    //vending_machine::input_50 = //button;
-    //vending_machine::input_100 = //button;
+    if (is_BTNU(data) == BTNU)  //Moeda de 25 inserida
+        input_25 = true;
+    if (is_BTNL(data) == BTNL)  //Moeda de 50 inserida
+        input_50 = true;
+    if (is_BTND(data) == BTND)  //Moeda de 1 real
+        input_100 = true;
+    if (is_BTNR(data) == BTNR)  //MEET Selecionado
+        input_a = true;
+    if (is_BTNC(data) == BTNC)  //ETIRPS Selecionado
+        input_b = true;
+    if (is_SW0(data) == SW0)    //Devolução ativada
+        input_d = true;
 }
 
 //! Windowns Interface
@@ -88,7 +94,7 @@ void interface_windowns::Display(void)
 void interface_windowns::Inputs()
 {
     teclado = '0';
-    cin >> teclado; //recebe a entrada de teclado do terminal do usuário e armazena em 'teclado'
+    cin >> teclado; //recebe a entrada do teclado
 
     //seta as variáveis dependendo da entrada em 'teclado'
     if (teclado == '1') {
