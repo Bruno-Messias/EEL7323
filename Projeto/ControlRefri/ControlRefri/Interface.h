@@ -3,7 +3,7 @@
 
 #include "VendingMachine.cpp"
 
-//--------------- Máscarasd para os LEDS de saida -----------
+//--------------- Máscaras para os LEDS de saida -----------
 #define LD0_HIGH(output)*output || 0x00000001
 #define LD0_LOW(output)	*output && 0xfffffffe
 #define LD1_HIGH(output)*output || 0x00000002
@@ -14,7 +14,20 @@
 #define LD3_LOW(output)	*output && 0xfffffffb
 #define LD4_HIGH(output)*output || 0x00000005
 #define LD4_LOW(output)	*output && 0xfffffffa
-//------------------------------------------------------------
+
+//-------------- Máscaras para Inputs -----------------------
+#define BTNU 0x00000010
+#define is_BTNU(data) BTNU && *data
+#define BTNL 0X00000011
+#define is_BTNL(data) BTNL && *data
+#define BTND 0x00000012
+#define is_BTND(data) BTND && *data
+#define BTNR 0X00000013
+#define is_BTNR(data) BTNR && *data
+#define BTNC 0x00000014
+#define is_BTNC(data) BTNC && *data
+#define SW0 0X00000008
+#define is_SW0(data) SW0 && *data
 
 class interface_leon: public vending_machine 
 {
