@@ -13,8 +13,9 @@ class PoolControlerWindowns: public PoolControler
 {
 	Timer time
 	bool timeout, pump, heater, reset, sw, low;
-	int estate, insertSW;
+	int estate, insertSW, insertReset;
 public:
+	void inputSW();
 	void FSM();
 	void Inputs();
 	void Outputs();

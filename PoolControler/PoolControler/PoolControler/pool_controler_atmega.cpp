@@ -2,6 +2,12 @@
 
 #include "pool_controler.cpp"
 
+void PoolControlerAtmega::inputSW()
+{
+    //TODO: Add sw input 
+}
+
+//TODO: Finish FSW
 void PoolControlerAtmega::FSM()
 {
     switch (estate)
@@ -52,8 +58,8 @@ void PoolControlerAtmega::FSM()
                 estate = 1;
                 break;
             }
+            else estate = 4;
         }
-        estate = 4;
         break;
     case 3: //ON2
 
@@ -69,8 +75,8 @@ void PoolControlerAtmega::FSM()
                 estate = 1;
                 break;
             }
+            else estate = 4;
         }
-        estate = 4;
         break;
     case 4: //OFF1
         timeout = true;
@@ -95,14 +101,14 @@ void PoolControlerAtmega::FSM()
         break;
     }
 
-}
+} 
 
 void PoolControlerAtmega::Inputs()
 {
-
+    //TODO: Add Inputs of Atmega 
 }
 
 void PoolControler::Outputs()
 {
-
+    //TODO: add outpus of Atmega
 }

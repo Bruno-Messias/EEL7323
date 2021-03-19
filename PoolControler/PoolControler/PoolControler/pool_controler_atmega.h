@@ -8,6 +8,7 @@ class PoolControlerAtmega : public PoolControler
 	bool timeout, pump, heater, reset, sw, low;
 	int estate;
 public:
+	void inputSW();
 	void FSM();
 	void Inputs();
 	void Outputs();

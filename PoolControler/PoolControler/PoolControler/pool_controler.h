@@ -6,6 +6,7 @@ class PoolControler
 public:
 	PoolControler();
 	~PoolControler();
+	virtual void inputSW() = 0;
 	virtual void FSM() = 0;
 	virtual void Inputs() = 0;
 	virtual void Outputs() = 0;
