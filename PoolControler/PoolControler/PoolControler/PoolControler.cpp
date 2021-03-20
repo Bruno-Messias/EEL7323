@@ -2,67 +2,20 @@
 //
 
 #include <iostream>
-#include <stdlib.h>
-#include <windows.h>
-#include <conio.h>
 
-int minute = 0; int second = 0; int flag = 0;
-
-void printData(int min, int sec)
-{
-    system("cls");
-    std::cout << "1. Start 2. Stop" << std::endl;
-    std::cout << "-------------------------" << std::endl ;
-    std::cout << "     " <<min << ":" << sec << std::endl;
-    std::cout << "-------------------------" << std::endl;
-}
-
-void selection()
-{
-    switch (_getch())
-    {
-    case 49:
-        flag = 0;
-        break;
-    case 50:
-        flag = 1;
-        break;
-    case 52:
-        exit(0);
-        break;
-    default:
-        break;
-    }
-}
-
-void couter()
-{
-    while (!_kbhit() && flag ==0) //kbhit -> keyboard hit interrupt to detect if the user press th keyboard
-    {
-        if (second > 59)
-        {
-            minute++;
-            second = 0;
-        }
-        
-        if (minute > 59)
-        {
-            minute = 0;
-        }
-        
-        printData(minute, second);
-        Sleep(1000);
-        ++second;
-    }
-    selection();
-}
-
+#include "pool_controler_windowns.cpp"
+//#include "pool_controler_atmega.cpp"
 
 int main()
 {
+    PoolControlerWindowns Controler;
+    Controler.inputSW();
+
     while (1)
     {
-       couter();
+        Controler.Inputs();
+        Controler.Outputs();
+        Controler.FSM();
     }
     
     return 0;

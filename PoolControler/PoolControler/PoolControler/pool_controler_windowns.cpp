@@ -11,7 +11,6 @@ void PoolControlerWindowns::inputSW()
     else sw = false;
 }
 
-//TODO: Finish FSM
 void PoolControlerWindowns::FSM()
 {
     switch (estate)
@@ -51,11 +50,11 @@ void PoolControlerWindowns::FSM()
     case 2: //ON1
 
         //Next Estate:
-        Timer::resetTimer();
-        while (Timer::getTime() <= 3600)
+        time.resetTimer();
+        while (time.getTime() <= 3600)
         {
-            Timer::coutTimer();
-            PoolControlerWindowns::displayTimer();
+            time.coutTimer();
+            displayTimer();
             Sleep(sec);
             //? Need Test!
             if (_kbhit()) //If keyboard pressed check if reset is pressed
@@ -71,21 +70,21 @@ void PoolControlerWindowns::FSM()
                 }
             }
             
-            if (Timer::getTime() <= 60)
+            if (time.getTime() <= 60)
             {
                 low = true;
                 std::cout << "Low time Alert!" << std::endl;
             }
         }
-        low = false
+        low = false;
         break;
     case 3: //ON2
 
         //Next Estate:
-        Timer::resetTimer();
-        while (Timer::getTime() <= 1800)
+        time.resetTimer();
+        while (time.getTime() <= 1800)
         {
-            Timer::coutTimer();
+            time.coutTimer();
             PoolControlerWindowns::displayTimer();
             Sleep(sec);
 
@@ -102,7 +101,7 @@ void PoolControlerWindowns::FSM()
                     continue;
                 }
             }
-            if (Timer::getTime() <= 60)
+            if (time.getTime() <= 60)
             {
                 low = true;
                 std::cout << "Low time Alert!" << std::endl;
@@ -120,10 +119,10 @@ void PoolControlerWindowns::FSM()
     case 5: //OFF2
 
         //Next Estate:
-        Timer::resetTimer();
-        while (Timer::getTime() <= 60)
+        time.resetTimer();
+        while (time.getTime() <= 60)
         {
-            Timer::coutTimer();
+            time.coutTimer();
             Sleep(sec);
         }
         pump = false;
@@ -137,7 +136,6 @@ void PoolControlerWindowns::FSM()
 
 void PoolControlerWindowns::Inputs()
 {
-    //TODO: FInish Inputs 
     switch (estate)
     {
     case 0: //RESET
@@ -207,7 +205,7 @@ void PoolControlerWindowns::displayTimer()
 {
     system("cls");
     std::cout << "--------- Timer ----------" << std::endl;
-    minuteTimer = Timer::getTime();
+    minuteTimer = time.getTime();
     minuteTimer = minuteTimer / 60;
     minuteTimer = 60 - minuteTimer;
     std::cout << "    " << minuteTimer << std::endl;

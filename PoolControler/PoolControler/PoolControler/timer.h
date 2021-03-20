@@ -3,7 +3,7 @@
 #define TIMER_H
 
 class Timer {
-	int time;
+	int timer = 0;
 public:
 	Timer();
 	~Timer();

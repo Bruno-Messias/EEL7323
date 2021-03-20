@@ -47,10 +47,10 @@ void PoolControlerAtmega::FSM()
     case 2: //ON1
 
         //Next Estate:
-        Timer::resetTimer();
-        while (Timer::getTime() <= 3600)
+        time.resetTimer();
+        while (time.getTime() <= 3600)
         {
-            Timer::coutTimer();
+            time.coutTimer();
             //TODO: Add sleep function
             low = true;
             if (reset)
@@ -64,10 +64,10 @@ void PoolControlerAtmega::FSM()
     case 3: //ON2
 
         //Next Estate:
-        Timer::resetTimer();
-        while (Timer::getTime() <= 1800)
+        time.resetTimer();
+        while (time.getTime() <= 1800)
         {
-            Timer::coutTimer();
+            time.coutTimer();
             //TODO: Add sleep funcion
             low = true;
             if (reset)
@@ -87,10 +87,10 @@ void PoolControlerAtmega::FSM()
     case 5: //OFF2
 
         //Next Estate:
-        Timer::resetTimer();
-        while (Timer::getTime() <= 60)
+        time.resetTimer();
+        while (time.getTime() <= 60)
         {
-            Timer::coutTimer()
+            time.coutTimer();
                 //TODO: Add sleep function
         }
         pump = false;
@@ -108,7 +108,7 @@ void PoolControlerAtmega::Inputs()
     //TODO: Add Inputs of Atmega 
 }
 
-void PoolControler::Outputs()
+void PoolControlerAtmega::Outputs()
 {
     //TODO: add outpus of Atmega
 }
