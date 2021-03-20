@@ -11,7 +11,7 @@ void PoolControlerWindowns::inputSW()
     else sw = false;
 }
 
-//TODO: FInish FSM
+//TODO: Finish FSM
 void PoolControlerWindowns::FSM()
 {
     switch (estate)
@@ -54,17 +54,29 @@ void PoolControlerWindowns::FSM()
         Timer::resetTimer();
         while (Timer::getTime() <= 3600)
         {
+            //TODO Add display timer with system("cls")
             Timer::coutTimer();
-            //TODO: ADD low function
             Sleep(sec);
-            //TODO: implement check reset without stop timer 
-            if (reset)
+            //? Need Test!
+            if (_kbhit()) //If keyboard pressed check if reset is pressed
             {
-                estate = 1;
-                break;
+                switch (_getch())
+                {
+                case 49:// press 1 to reset
+                    estate = 1;
+                    break;
+                default:
+                    estate = 4;
+                    continue;
+                }
             }
-            else estate = 4;
+            //TODO Add display for low signal
+            if (Timer::getTime() <= 60)
+            {
+                low = true;
+            }
         }
+        low = false
         break;
     case 3: //ON2
 
@@ -72,17 +84,30 @@ void PoolControlerWindowns::FSM()
         Timer::resetTimer();
         while (Timer::getTime() <= 1800)
         {
+            //TODO Add display Timer with system("cls")
             Timer::coutTimer();
-            //TODO: ADD low function
             Sleep(sec);
-            //TODO: implement check reset without stop timer 
-            if (reset)
+
+            //? Need Test!
+            if (_kbhit()) //If keyboard pressed check if reset is pressed
             {
-                estate = 1;
-                break;
+                switch (_getch())
+                {
+                case 49:// press 1 to reset
+                    estate = 1;
+                    break;
+                default:
+                    estate = 4;
+                    continue;
+                }
             }
-            else estate = 4;
+            //TODO Add display for low signal
+            if (Timer::getTime() <= 60)
+            {
+                low = true;
+            }
         }
+        low = false;
         break;
     case 4: //OFF1
         timeout = true;
@@ -116,18 +141,16 @@ void PoolControlerWindowns::Inputs()
     case 0: //RESET
         std::cout << "Initiate?" << std::endl;
         std::cin >> insertReset;
-        if (insertSW == 1)
+        if (insertReset == 1)
         {
             reset = true;
         }
         else reset = false;
         break;
     case 1: //INIT
-
         //Next Estate
         break;
     case 2: //ON1
-
         break;
     case 3: //ON2
 
@@ -145,5 +168,36 @@ void PoolControlerWindowns::Inputs()
 
 void PoolControlerWindowns::Outputs()
 {
-    //TODO: add outpus of Atmega
+    switch (estate)
+    {
+    case 0: //RESET
+        std::cout << "------------ Controler Pool ----------" << std::endl;
+        std::cout << "For Reset Timer press 1 anytime " << std::endl;
+    case 1: //INIT
+        //Next Estate
+        break;
+    case 2: //ON1
+        std::cout << "------ Initiating Timer 60s -----" << std::endl;
+        Sleep(100);
+        system("cls");
+        break;
+    case 3: //ON2
+        std::cout << "------ Initiating Timer 30s -----" << std::endl;
+        Sleep(100);
+        system("cls");
+        break;
+    case 4: //OFF1
+        std::cout << "------ Powering OFF the System -----" << std::endl;
+        Sleep(100);
+        system("cls");
+        break;
+    case 5: //OFF2  
+        std::cout << "--------------- System OFF  ----------------" << std::endl;
+        std::cout << "------ Thank you for using our system! -----" << std::endl;
+        Sleep(100);
+        system("cls");
+    default:
+        break;
+    }
 }
+

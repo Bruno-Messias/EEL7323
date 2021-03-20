@@ -2,19 +2,70 @@
 //
 
 #include <iostream>
+#include <stdlib.h>
+#include <windows.h>
+#include <conio.h>
+
+int minute = 0; int second = 0; int flag = 0;
+
+void printData(int min, int sec)
+{
+    system("cls");
+    std::cout << "1. Start 2. Stop" << std::endl;
+    std::cout << "-------------------------" << std::endl ;
+    std::cout << "     " <<min << ":" << sec << std::endl;
+    std::cout << "-------------------------" << std::endl;
+}
+
+void selection()
+{
+    switch (_getch())
+    {
+    case 49:
+        flag = 0;
+        break;
+    case 50:
+        flag = 1;
+        break;
+    case 52:
+        exit(0);
+        break;
+    default:
+        break;
+    }
+}
+
+void couter()
+{
+    while (!_kbhit() && flag ==0) //kbhit -> keyboard hit interrupt to detect if the user press th keyboard
+    {
+        if (second > 59)
+        {
+            minute++;
+            second = 0;
+        }
+        
+        if (minute > 59)
+        {
+            minute = 0;
+        }
+        
+        printData(minute, second);
+        Sleep(1000);
+        ++second;
+    }
+    selection();
+}
+
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    while (1)
+    {
+       couter();
+    }
+    
+    return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

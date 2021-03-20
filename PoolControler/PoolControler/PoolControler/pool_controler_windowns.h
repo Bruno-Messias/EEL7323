@@ -5,6 +5,8 @@
 #include "timer.cpp"
 
 #include <windows.h>
+#include <conio.h>
+#include <stdlib.h>
 #include <iostream>
 
 #define sec 1000
