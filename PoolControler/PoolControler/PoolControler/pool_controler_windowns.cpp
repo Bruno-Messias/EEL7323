@@ -17,7 +17,7 @@ PoolControlerWindowns::PoolControlerWindowns()
 
 void PoolControlerWindowns::inputSW()
 {
-    std::cout << "SW?: " << std::endl;
+    std::cout << "SW: 0 for 60min; 1 for 30min " << std::endl;
     std::cin >> insertSW;
     if (insertSW == 1)
     {
@@ -66,9 +66,9 @@ void PoolControlerWindowns::FSM()
 
         //Next Estate:
         time.setTimer(60);
-        while (time.getTime() >= 0)
+        while (time.getTime() > 0)
         {
-            if (time.getTime() <= 5)
+            if (time.getTime() < 5)
             {
                 low = true;
                 std::cout << "Low time Alert!" << std::endl;
@@ -76,7 +76,7 @@ void PoolControlerWindowns::FSM()
 
             time.coutTimer();
             PoolControlerWindowns::displayTimer();
-            Sleep(sec);
+            Sleep(minute);
             if (_kbhit()) //If keyboard pressed check if reset is pressed
             {
                 switch (_getch())
@@ -99,17 +99,16 @@ void PoolControlerWindowns::FSM()
 
         //Next Estate:
         time.setTimer(30);
-        while (time.getTime() >= 0)
+        while (time.getTime() > 0)
         {
-            if (time.getTime() <= 5)
+            if (time.getTime() < 5)
             {
                 low = true;
-                std::cout << "Low time Alert!" << std::endl;
             }
 
             time.coutTimer();
             PoolControlerWindowns::displayTimer();
-            Sleep(sec);
+            Sleep(minute);
             if (_kbhit()) //If keyboard pressed check if reset is pressed
             {
                 switch (_getch())
@@ -138,12 +137,15 @@ void PoolControlerWindowns::FSM()
 
         //Next Estate:
         time.setTimer(1);
-        while (time.getTime() >= 0)
+        while (time.getTime() > 0)
         {
             time.coutTimer();
-            Sleep(sec);
+            Sleep(minute);
         }
         pump = false;
+        estate = 0;
+        break;
+    default:
         estate = 0;
         break;
     }
@@ -155,7 +157,7 @@ void PoolControlerWindowns::Inputs()
     {
     case 0: //RESET
         std::cout << "------------ Controler Pool ----------" << std::endl;
-        std::cout << "For Initiate or Reset Timer press 1 anytime " << std::endl;
+        std::cout << "For Initiate or Reset Timer Press 1" << std::endl;
         std::cin >> insertReset;
         if (insertReset == 1)
         {
@@ -187,7 +189,6 @@ void PoolControlerWindowns::Outputs()
     switch (estate)
     {
     case 0: //RESET
-
         break;
     case 1: //INIT
 
@@ -198,7 +199,7 @@ void PoolControlerWindowns::Outputs()
         //Next Estate
         std::cout << std::endl;
         std::cout << "------ Initiating Timer 60min -----" << std::endl;
-        Sleep(1000);
+        Sleep(500);
         system("cls");
         break;
     case 3: //ON2
@@ -206,7 +207,7 @@ void PoolControlerWindowns::Outputs()
         //Next Estate
         std::cout << std::endl;
         std::cout << "------ Initiating Timer 30min -----" << std::endl;
-        Sleep(1000);
+        Sleep(500);
         system("cls");
         break;
     case 4: //OFF1
@@ -214,7 +215,7 @@ void PoolControlerWindowns::Outputs()
         //Next Estate
         std::cout << std::endl;
         std::cout << "------ Powering OFF the System -----" << std::endl;
-        Sleep(1000);
+        Sleep(500);
         system("cls");
         break;
     case 5: //OFF2 
@@ -238,5 +239,9 @@ void PoolControlerWindowns::displayTimer()
     minuteTimer = time.getTime();
     std::cout << "    " << minuteTimer << std::endl;
     std::cout << "--------------------------" << std::endl;
+    if (minuteTimer < 5)
+    {
+        std::cout << "Alert Low timer remaining!" << std::endl;
+    }
 }
 
