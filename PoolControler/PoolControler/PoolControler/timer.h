@@ -8,7 +8,7 @@ public:
 	Timer();
 	~Timer();
 	void coutTimer();
-	void resetTimer();
+	void setTimer(int);
 	int getTime();
 };
 

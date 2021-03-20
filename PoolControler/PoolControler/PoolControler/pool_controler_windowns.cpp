@@ -1,5 +1,20 @@
 #include "pool_controler_windowns.h"
 
+PoolControlerWindowns::PoolControlerWindowns()
+{
+    estate = 0;
+    sw = false;
+    pump = false;
+    heater = false;
+    timeout = false;
+    reset = false;
+    sw = false;
+    low = false;
+    minuteTimer = 0;
+    insertSW = 0;
+    insertReset = 0;
+}
+
 void PoolControlerWindowns::inputSW()
 {
     std::cout << "SW?: " << std::endl;
@@ -50,13 +65,18 @@ void PoolControlerWindowns::FSM()
     case 2: //ON1
 
         //Next Estate:
-        time.resetTimer();
-        while (time.getTime() <= 3600)
+        time.setTimer(60);
+        while (time.getTime() >= 0)
         {
+            if (time.getTime() <= 5)
+            {
+                low = true;
+                std::cout << "Low time Alert!" << std::endl;
+            }
+
             time.coutTimer();
-            displayTimer();
+            PoolControlerWindowns::displayTimer();
             Sleep(sec);
-            //? Need Test!
             if (_kbhit()) //If keyboard pressed check if reset is pressed
             {
                 switch (_getch())
@@ -65,30 +85,31 @@ void PoolControlerWindowns::FSM()
                     estate = 1;
                     break;
                 default:
-                    estate = 4;
                     continue;
                 }
             }
-            
-            if (time.getTime() <= 60)
-            {
-                low = true;
-                std::cout << "Low time Alert!" << std::endl;
-            }
+            if (estate == 1)
+                break;
+
+            estate = 4;
         }
         low = false;
         break;
     case 3: //ON2
 
         //Next Estate:
-        time.resetTimer();
-        while (time.getTime() <= 1800)
+        time.setTimer(30);
+        while (time.getTime() >= 0)
         {
+            if (time.getTime() <= 5)
+            {
+                low = true;
+                std::cout << "Low time Alert!" << std::endl;
+            }
+
             time.coutTimer();
             PoolControlerWindowns::displayTimer();
             Sleep(sec);
-
-            //? Need Test!
             if (_kbhit()) //If keyboard pressed check if reset is pressed
             {
                 switch (_getch())
@@ -97,16 +118,13 @@ void PoolControlerWindowns::FSM()
                     estate = 1;
                     break;
                 default:
-                    estate = 4;
                     continue;
                 }
             }
-            if (time.getTime() <= 60)
-            {
-                low = true;
-                std::cout << "Low time Alert!" << std::endl;
-            }
+            if (estate == 1)
+                break;
 
+            estate = 4;
         }
         low = false;
         break;
@@ -119,16 +137,13 @@ void PoolControlerWindowns::FSM()
     case 5: //OFF2
 
         //Next Estate:
-        time.resetTimer();
-        while (time.getTime() <= 60)
+        time.setTimer(1);
+        while (time.getTime() >= 0)
         {
             time.coutTimer();
             Sleep(sec);
         }
         pump = false;
-        estate = 0;
-        break;
-    default:
         estate = 0;
         break;
     }
@@ -139,7 +154,8 @@ void PoolControlerWindowns::Inputs()
     switch (estate)
     {
     case 0: //RESET
-        std::cout << "Initiate?" << std::endl;
+        std::cout << "------------ Controler Pool ----------" << std::endl;
+        std::cout << "For Initiate or Reset Timer press 1 anytime " << std::endl;
         std::cin >> insertReset;
         if (insertReset == 1)
         {
@@ -171,30 +187,44 @@ void PoolControlerWindowns::Outputs()
     switch (estate)
     {
     case 0: //RESET
-        std::cout << "------------ Controler Pool ----------" << std::endl;
-        std::cout << "For Reset Timer press 1 anytime " << std::endl;
+
+        break;
     case 1: //INIT
+
         //Next Estate
         break;
     case 2: //ON1
-        std::cout << "------ Initiating Timer 60s -----" << std::endl;
-        Sleep(100);
+
+        //Next Estate
+        std::cout << std::endl;
+        std::cout << "------ Initiating Timer 60min -----" << std::endl;
+        Sleep(1000);
         system("cls");
         break;
     case 3: //ON2
-        std::cout << "------ Initiating Timer 30s -----" << std::endl;
-        Sleep(100);
+
+        //Next Estate
+        std::cout << std::endl;
+        std::cout << "------ Initiating Timer 30min -----" << std::endl;
+        Sleep(1000);
         system("cls");
         break;
     case 4: //OFF1
+
+        //Next Estate
+        std::cout << std::endl;
         std::cout << "------ Powering OFF the System -----" << std::endl;
-        Sleep(100);
+        Sleep(1000);
         system("cls");
         break;
-    case 5: //OFF2  
+    case 5: //OFF2 
+
+        //Next Estate
+        std::cout << std::endl;
         std::cout << "--------------- System OFF  ----------------" << std::endl;
+        std::cout << std::endl;
         std::cout << "------ Thank you for using our system! -----" << std::endl;
-        Sleep(100);
+        Sleep(1000);
         system("cls");
     default:
         break;
@@ -206,8 +236,6 @@ void PoolControlerWindowns::displayTimer()
     system("cls");
     std::cout << "--------- Timer ----------" << std::endl;
     minuteTimer = time.getTime();
-    minuteTimer = minuteTimer / 60;
-    minuteTimer = 60 - minuteTimer;
     std::cout << "    " << minuteTimer << std::endl;
     std::cout << "--------------------------" << std::endl;
 }

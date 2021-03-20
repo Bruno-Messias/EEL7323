@@ -10,6 +10,7 @@
 #include <iostream>
 
 #define sec 1000
+#define minute 60000
 
 class PoolControlerWindowns: public PoolControler
 {
@@ -17,6 +18,7 @@ class PoolControlerWindowns: public PoolControler
 	bool timeout, pump, heater, reset, sw, low;
 	int estate, insertSW, insertReset, minuteTimer;
 public:
+	PoolControlerWindowns();
 	void inputSW() override;
 	void FSM() override;
 	void Inputs() override;

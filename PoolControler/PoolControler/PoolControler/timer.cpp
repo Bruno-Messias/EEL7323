@@ -9,11 +9,11 @@ Timer::~Timer() { }
 
 void Timer::coutTimer()
 {
-	timer++;
+	timer--;
 }
-void Timer::resetTimer()
+void Timer::setTimer(int newTimer)
 {
-	timer = 0;
+	timer = newTimer;
 }
 int Timer::getTime()
 {
