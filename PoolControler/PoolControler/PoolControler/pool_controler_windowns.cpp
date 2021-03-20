@@ -54,8 +54,8 @@ void PoolControlerWindowns::FSM()
         Timer::resetTimer();
         while (Timer::getTime() <= 3600)
         {
-            //TODO Add display timer with system("cls")
             Timer::coutTimer();
+            PoolControlerWindowns::displayTimer();
             Sleep(sec);
             //? Need Test!
             if (_kbhit()) //If keyboard pressed check if reset is pressed
@@ -70,10 +70,11 @@ void PoolControlerWindowns::FSM()
                     continue;
                 }
             }
-            //TODO Add display for low signal
+            
             if (Timer::getTime() <= 60)
             {
                 low = true;
+                std::cout << "Low time Alert!" << std::endl;
             }
         }
         low = false
@@ -84,8 +85,8 @@ void PoolControlerWindowns::FSM()
         Timer::resetTimer();
         while (Timer::getTime() <= 1800)
         {
-            //TODO Add display Timer with system("cls")
             Timer::coutTimer();
+            PoolControlerWindowns::displayTimer();
             Sleep(sec);
 
             //? Need Test!
@@ -101,11 +102,12 @@ void PoolControlerWindowns::FSM()
                     continue;
                 }
             }
-            //TODO Add display for low signal
             if (Timer::getTime() <= 60)
             {
                 low = true;
+                std::cout << "Low time Alert!" << std::endl;
             }
+
         }
         low = false;
         break;
@@ -199,5 +201,16 @@ void PoolControlerWindowns::Outputs()
     default:
         break;
     }
+}
+
+void PoolControlerWindowns::displayTimer()
+{
+    system("cls");
+    std::cout << "--------- Timer ----------" << std::endl;
+    minuteTimer = Timer::getTime();
+    minuteTimer = minuteTimer / 60;
+    minuteTimer = 60 - minuteTimer;
+    std::cout << "    " << minuteTimer << std::endl;
+    std::cout << "--------------------------" << std::endl;
 }
 
