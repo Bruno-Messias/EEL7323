@@ -120,3 +120,14 @@
 /PoolControler/PoolControler/.vs/PoolControler/v16
 /PoolControler/PoolControler/PoolControler/Debug
 /PoolControler/PoolControler/Debug
+*.atsln
+*.mk
+PoolControler/PoolControler_AVR/PoolControler_AVR/PoolControler_AVR/Debug/Makefile
+*.eep
+*.elf
+*.hex
+*.lss
+*.map
+*.srec
+*.xml
+*.cppproj
