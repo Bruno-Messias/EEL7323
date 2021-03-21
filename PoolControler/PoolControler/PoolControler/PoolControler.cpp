@@ -3,12 +3,13 @@
 
 #include <iostream>
 
-#include "pool_controler_windowns.cpp"
-//#include "pool_controler_atmega.cpp"
+//#include "pool_controler_windowns.cpp"
+#include "pool_controler_atmega.cpp"
 
 int main()
 {
-    PoolControlerWindowns Controler;
+    //PoolControlerWindowns Controler;
+    PoolControlerAtmega Controler;
     Controler.inputSW();
 
     while (1)

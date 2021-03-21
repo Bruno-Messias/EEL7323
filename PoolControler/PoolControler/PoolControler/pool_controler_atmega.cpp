@@ -1,6 +1,17 @@
 #include "pool_controler_atmega.h"
-
 #include "pool_controler.cpp"
+
+PoolControlerAtmega::PoolControlerAtmega()
+{
+    estate = 0;
+    sw = false;
+    pump = false;
+    heater = false;
+    timeout = false;
+    reset = false;
+    sw = false;
+    low = false;
+}
 
 void PoolControlerAtmega::inputSW()
 {
@@ -13,11 +24,13 @@ void PoolControlerAtmega::FSM()
     switch (estate)
     {
     case 0: //RESET
+
         timeout = true;
         pump = false;
         heater = false;
         low = false;
 
+        //Next Estate
         if (reset)
         {
             estate = 1;
@@ -29,10 +42,12 @@ void PoolControlerAtmega::FSM()
             break;
         }
     case 1: //INIT
+
         reset = false;
         timeout = false;
         pump = true;
         heater = true;
+
         //Next Estate:
         if (sw)
         {
@@ -44,15 +59,17 @@ void PoolControlerAtmega::FSM()
             estate = 2;
             break;
         }
-    case 2: //ON1
+    case 2: //ON1 - 60min config
 
         //Next Estate:
-        time.resetTimer();
-        while (time.getTime() <= 3600)
+        time.setTimer(60);
+        while (time.getTime() > 0 )
         {
             time.coutTimer();
             //TODO: Add sleep function
-            low = true;
+            //TODO: Add SPI cominucation with 7 digit driver
+            //TODO Add low signal
+            
             if (reset)
             {
                 estate = 1;
@@ -61,15 +78,19 @@ void PoolControlerAtmega::FSM()
             else estate = 4;
         }
         break;
-    case 3: //ON2
+
+    case 3: //ON2 - 30min config
 
         //Next Estate:
-        time.resetTimer();
-        while (time.getTime() <= 1800)
+        time.setTimer(30);
+        while (time.getTime() > 0)
         {
             time.coutTimer();
+
             //TODO: Add sleep funcion
-            low = true;
+            //TODO: Add SPI cominucation with 7 digit driver
+            //TODO Add low signal
+
             if (reset)
             {
                 estate = 1;
@@ -79,23 +100,27 @@ void PoolControlerAtmega::FSM()
         }
         break;
     case 4: //OFF1
+
         timeout = true;
         heater = false;
         low = false;
+
+        //Next Estate
         estate = 5;
         break;
     case 5: //OFF2
 
         //Next Estate:
-        time.resetTimer();
-        while (time.getTime() <= 60)
+        time.setTimer(1);
+        while (time.getTime() > 0)
         {
             time.coutTimer();
-                //TODO: Add sleep function
+            //TODO: Add sleep function
         }
         pump = false;
         estate = 0;
         break;
+
     default:
         estate = 0;
         break;
