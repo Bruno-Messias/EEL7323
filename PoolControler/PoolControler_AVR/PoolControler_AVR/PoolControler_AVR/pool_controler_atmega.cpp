@@ -25,9 +25,10 @@ PoolControlerAtmega::PoolControlerAtmega()
 	rst_bit(PORTB, low_bit);
 	
 	//Disable Interrupts
-	rst_bit(PCMSK0, PCINT5); //Disable interrupt of reset_bit
-	rst_bit(PCICR, PCIE0); // Disable Interrupt
+	rst_bit(PCMSK0, PCINT0);		//Disable interrupt of reset_bit
+	rst_bit(PCICR, PCIE0);			// Disable Interrupt
 	
+	led.MAX7219_INIT();				//Initiate MAx7239
 }
 
 void PoolControlerAtmega::inputSW()
@@ -104,15 +105,15 @@ void PoolControlerAtmega::FSM()
 			PoolControlerAtmega::displayTimer();
 			_delay_ms(60000);
 			
-			
-            set_bit(PCMSK0, PCINT5); //Enable interrupt of reset_bit
-            set_bit(PCICR, PCIE0); // Need to enable for interrupt
+            set_bit(PCMSK0, PCINT0);	//Enable interrupt of reset_bit
+            set_bit(PCICR, PCIE0);		//Need to enable for interrupt
               
-            sei(); //Initiate check service routine
+            sei();						//Initiate check service routine
         }
-		rst_bit(PCMSK0, PCINT5); //Disable interrupt of reset_bit
-		rst_bit(PCICR, PCIE0); // Disable Interrupt
-		rst_bit(PORTB, low_bit); //Disable low signal
+		led.resetDisplay();				//Reset the display
+		rst_bit(PCMSK0, PCINT0);		//Disable interrupt of reset_bit
+		rst_bit(PCICR, PCIE0);			//Disable Interrupt
+		rst_bit(PORTB, low_bit);		//Disable low signal
 		estate = 4;
         break;
 
@@ -133,14 +134,15 @@ void PoolControlerAtmega::FSM()
             _delay_ms(60000);
 			
 			//-- Setting the interrupt
-			set_bit(PCMSK0, PCINT5); //Enable interrupt of reset_bit
-			set_bit(PCICR, PCIE0); // Need to enable for interrupt
+			set_bit(PCMSK0, PCINT0);	//Enable interrupt of reset_bit
+			set_bit(PCICR, PCIE0);		// Need to enable for interrupt
 			 
-			sei(); //Initiate check service routine
+			sei();						//Initiate check service routine
         }
-		rst_bit(PORTB, low_bit); //disable low signal
-		rst_bit(PCMSK0, PCINT5); //Disable interrupt of reset_bit
-		rst_bit(PCICR, PCIE0); // Disable Interrupt
+		led.resetDisplay();				//Reset the display
+		rst_bit(PORTB, low_bit);		//Disable low signal
+		rst_bit(PCMSK0, PCINT0);		//Disable interrupt of reset_bit
+		rst_bit(PCICR, PCIE0);			// Disable Interrupt
 		estate = 4;
         break;
     case 4: //OFF1
@@ -180,7 +182,7 @@ void PoolControlerAtmega::Inputs()
     switch (estate)
     {
 	    case 0: //RESET
-			if(test_bit(PINB, reset_bit)) //Wait until PINB is pressed
+			if(test_bit(PINB, reset_bit)) //Wait until reset pin is pressed
 			{
 				reset = true;
 			}
@@ -205,37 +207,7 @@ void PoolControlerAtmega::Inputs()
     }
 }
 
-void PoolControlerAtmega::Outputs()
-{
-    switch (estate)
-    {
-	    case 0: //RESET
-			
-			//Next Estate
-			break;
-	    case 1: //INIT
-
-			//Next Estate
-			break;
-	    case 2: //ON1
-
-			//Next Estate
-			break;
-	    case 3: //ON2
-
-			//Next Estate
-		    break;
-	    case 4: //OFF1
-
-			//Next Estate
-			break;
-	    case 5: //OFF2
-
-	    //Next Estate
-	    default:
-			break;
-    }
-}
+void PoolControlerAtmega::Outputs() { }
 
 void PoolControlerAtmega::setEstate(int newEstate)
 {
@@ -249,8 +221,8 @@ void PoolControlerAtmega::displayTimer()
 	//Break apart the digits for the 7 segment Display 
 	if(value > 9)
 	{
-		value1 = int(value/10); //most significant bit
-		value2 = value%10; //least significant bit	
+		value1 = int(value/10);			//most significant bit
+		value2 = value%10;				//least significant bit	
 	}
 	else 
 	{
@@ -258,9 +230,9 @@ void PoolControlerAtmega::displayTimer()
 		value2 = value;
 	}
 	
-	
-	
-	
+	//Send the digits to 7 segment
+	led.displaySignal(1, value1);
+	led.displaySignal(0, value2);
 }
 
 ISR(PCINT0_vect) //Interrupt Service Routine
