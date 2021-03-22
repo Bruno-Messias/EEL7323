@@ -1,5 +1,10 @@
-//Pins ATmega
+#ifndef PINS_H
+#define PINS_H
+
+//Pins Avr
 #include <avr/io.h>
+
+//-- Defining Macros for pins
 
 //set a bit in a register
 #define set_bit(reg,bit)	(reg |= (1<<bit))
@@ -17,8 +22,16 @@ low -> PB1 -> d9
 display(d7.d6.d5) -> PD's(5,6,7)
 */
 
-#define pump_bit PORTB3
-#define heater_bit PORTB4
-#define reset_bit PORTB5
-#define sw_bit PORTB2
+//-- Defining Pins
+#define pump_bit PORTB7
+#define heater_bit PORTB6
+#define reset_bit PORTB0
+#define sw_bit PORTB4
 #define low_bit PORTB1
+
+#define SPI_DDR DDRB
+#define CS PORTB2  
+#define MOSI PORTB3
+#define SCK PORTB5
+
+#endif //PINS_H

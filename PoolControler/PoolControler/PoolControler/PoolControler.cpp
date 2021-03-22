@@ -3,23 +3,34 @@
 
 #include <iostream>
 
-//#include "pool_controler_windowns.cpp"
-#include "pool_controler_atmega.cpp"
+bool flag = false; //flag interrupt, global variable
 
-int main()
+#include "pool_controler_windowns.cpp"
+
+//-- Uncomment bellow for Atmega Interface: 
+//#include "pool_controler_atmega.cpp"
+
+int main(void)
 {
-    //PoolControlerWindowns Controler;
-    PoolControlerAtmega Controler;
-    Controler.inputSW();
+	PoolControlerWindowns Controler;
+	//-- Uncomment bellow for Atmega Interface:
+	//PoolControlerAtmega Controler;
 
-    while (1)
-    {
-        Controler.Inputs();
-        Controler.Outputs();
-        Controler.FSM();
-    }
-    
-    return 0;
+	Controler.inputSW();
+
+	while (1)
+	{
+		Controler.Inputs();
+		Controler.Outputs();
+		Controler.FSM();
+		if (flag)
+		{
+			Controler.setEstate(1);  //If interrupt occur the next estate is INIT to reset the timer
+			flag = false;
+		}
+	}
+
+	return 0;
 }
 
 

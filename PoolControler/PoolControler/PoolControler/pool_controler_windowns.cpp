@@ -245,3 +245,7 @@ void PoolControlerWindowns::displayTimer()
     }
 }
 
+void PoolControlerWindowns::setEstate(int newEstate)
+{
+    estate = newEstate;
+}

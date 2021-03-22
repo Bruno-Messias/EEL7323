@@ -24,6 +24,7 @@ public:
 	void Inputs() override;
 	void Outputs() override;
 	void displayTimer();
+	void setEstate(int);
 };
 
 #endif // !POOL_CONTROLER_WINDOWNS_H
