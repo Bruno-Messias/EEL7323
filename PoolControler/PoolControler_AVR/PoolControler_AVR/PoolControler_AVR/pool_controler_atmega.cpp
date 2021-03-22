@@ -263,3 +263,7 @@ void PoolControlerAtmega::displayTimer()
 	
 }
 
+ISR(PCINT0_vect) //Interrupt Service Routine
+{
+	flag = true;
+}
