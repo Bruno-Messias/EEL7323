@@ -36,18 +36,18 @@ display(d7.d6.d5) -> PD's(5,6,7)
 class PoolControlerAtmega : public PoolControler
 {
 	Timer time;
-	int estate,value1,value2,value;
+	int estate, value1, value2, value;
 	bool timeout, pump, heater, reset, sw, low;
 public:
 	PoolControlerAtmega();
-	void inputSW() override;
-	void FSM() override;
-	void Inputs() override;
-	void Outputs() override;
+	~PoolControlerAtmega() { }
+	virtual void inputSW();
+	virtual void FSM();
+	virtual void Inputs();
+	virtual void Outputs();
 	void setEstate(int);
 	void displayTimer();
 };
-
 
 #endif // !POOL_CONTROLER_ATMEGA_H
 

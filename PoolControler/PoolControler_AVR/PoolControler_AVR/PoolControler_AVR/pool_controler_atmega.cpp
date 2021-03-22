@@ -24,6 +24,10 @@ PoolControlerAtmega::PoolControlerAtmega()
 	rst_bit(PORTB, heater_bit);
 	rst_bit(PORTB, low_bit);
 	
+	//Disable Interrupts
+	rst_bit(PCMSK0, PCINT5); //Disable interrupt of reset_bit
+	rst_bit(PCICR, PCIE0); // Disable Interrupt
+	
 }
 
 void PoolControlerAtmega::inputSW()
@@ -73,7 +77,6 @@ void PoolControlerAtmega::FSM()
 		set_bit(PORTB, heater_bit);
 		rst_bit(PORTB, low_bit);
 
-
         //Next Estate:
         if (sw)
         {
@@ -94,7 +97,7 @@ void PoolControlerAtmega::FSM()
              if (time.getTime() < 5)
              {
 	             low = true;
-				 set_bit(PORTB, low_bit);
+				 set_bit(PORTB, low_bit); //Enable Low Signal
              }
 			
 			time.coutTimer();
@@ -106,17 +109,11 @@ void PoolControlerAtmega::FSM()
             set_bit(PCICR, PCIE0); // Need to enable for interrupt
               
             sei(); //Initiate check service routine
-              
-			//TODO Solve the ISR routine inside a class
-			  
-            if(estate == 1)
-            {
-				break;
-            }
-			 
-			estate = 4;
         }
-		rst_bit(PORTB, low_bit);
+		rst_bit(PCMSK0, PCINT5); //Disable interrupt of reset_bit
+		rst_bit(PCICR, PCIE0); // Disable Interrupt
+		rst_bit(PORTB, low_bit); //Disable low signal
+		estate = 4;
         break;
 
     case 3: //ON2 - 30min config
@@ -128,30 +125,23 @@ void PoolControlerAtmega::FSM()
 			if (time.getTime() < 5)
 			{
 				low = true;
-				set_bit(PORTB, low_bit);
+				set_bit(PORTB, low_bit); //Enable low signal
 			}
 			
             time.coutTimer();
             PoolControlerAtmega::displayTimer();
             _delay_ms(60000);
 			
-            //! Need TO test!
-			 
+			//-- Setting the interrupt
 			set_bit(PCMSK0, PCINT5); //Enable interrupt of reset_bit
 			set_bit(PCICR, PCIE0); // Need to enable for interrupt
 			 
 			sei(); //Initiate check service routine
-			 
-			//TODO Solve the ISR routine inside a class
-			
-			if(estate == 1)
-			{
-				break; 
-			}
-			 
-			estate = 4;
         }
-		rst_bit(PORTB, low_bit);
+		rst_bit(PORTB, low_bit); //disable low signal
+		rst_bit(PCMSK0, PCINT5); //Disable interrupt of reset_bit
+		rst_bit(PCICR, PCIE0); // Disable Interrupt
+		estate = 4;
         break;
     case 4: //OFF1
 
@@ -254,11 +244,22 @@ void PoolControlerAtmega::setEstate(int newEstate)
 
 void PoolControlerAtmega::displayTimer()
 {
-	//TODO Create driver to display Timer
+	value = time.getTime();
+	
+	//Break apart the digits for the 7 segment Display 
+	if(value > 9)
+	{
+		value1 = int(value/10); //most significant bit
+		value2 = value%10; //least significant bit	
+	}
+	else 
+	{
+		value1 = 0;
+		value2 = value;
+	}
+	
+	
+	
+	
 }
 
-//Interrupt Service routine
-//ISR(PCINT0_vect)
-//{
-	//PoolControlerAtmega.setEstate(1);
-//}
