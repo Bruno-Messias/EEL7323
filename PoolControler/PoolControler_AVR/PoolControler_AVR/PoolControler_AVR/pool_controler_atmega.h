@@ -2,7 +2,7 @@
 #define POOL_CONTROLER_ATMEGA_H
 
 // -- Frequency --
-#define F_CPU 16000000 // frequency oscillator
+#define F_CPU   1000000
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -13,12 +13,14 @@
 #include "timer.cpp"
 #include "MAX7219_driver.cpp"
 
+#define sec 1000
+#define minute 60000
 
 class PoolControlerAtmega : public PoolControler
 {
 	Timer time;
 	MaxDriver led;
-	int estate, value1, value2, value;
+	int estate, value;
 	bool timeout, pump, heater, reset, sw, low;
 public:
 	PoolControlerAtmega();

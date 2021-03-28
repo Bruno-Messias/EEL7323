@@ -29,9 +29,8 @@ display(d7.d6.d5) -> PD's(5,6,7)
 #define sw_bit PORTB4
 #define low_bit PORTB1
 
-#define SPI_DDR DDRB
-#define CS PORTB2  
-#define MOSI PORTB3
-#define SCK PORTB5
+#define PIN_SCK PORTB5
+#define PIN_MOSI PORTB3
+#define PIN_SS PORTB2
 
 #endif //PINS_H

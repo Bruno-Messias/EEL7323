@@ -1,84 +1,93 @@
 ﻿#include "MAX7219_driver.h"
 
-
 MaxDriver::MaxDriver()
 {
-	 // set CS, MOSI and SCK to output
-	 SPI_DDR |= (1 << CS) | (1 << MOSI) | (1 << SCK);
-
-	 // enable SPI, set as master, and clock to fosc/128
-	 SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
+	 	
 }
 
 
-void MaxDriver::SPI_Write_Byte(uint8_t data)
+void MaxDriver::spiSendByte (char databyte)
 {
-	// load data into register
-	SPDR = data;
-
-	// Wait for transmission complete
-	while(!(SPSR & (1 << SPIF)));
+	// Copy data into the SPI data register
+	SPDR = databyte;
+	// Wait until transfer is complete
+	while (!(SPSR & (1 << SPIF)));
 }
 
+void MaxDriver::MAX7219_writeData(char data_register, char data)
+{
+	MAX7219_LOAD0;
+	// Send the register where the data will be stored
+	spiSendByte(data_register);
+	// Send the data to be stored
+	spiSendByte(data);
+	MAX7219_LOAD1;
+}
+
+void MaxDriver::MAX7219_clearDisplay()
+{
+	char i = digitsInUse;
+	// Loop until 0, but don't run for zero
+	do {
+		// Set each display in use to blank
+		MaxDriver::MAX7219_writeData(i, MAX7219_CHAR_BLANK);
+	} while (--i);
+}
 
 void MaxDriver::MAX7219_INIT()
 {
-	// Disable Shutdown mode
-	rst_bit(PORTB, CS);		 // CS pin is pulled LOW
-	SPI_Write_Byte(0x0C);    // Select Shutdown register
-	SPI_Write_Byte(0x01);    // Set D0 bit to return to normal operation
-	set_bit(PORTB, CS) ;     // CS pin is pulled HIGH
+	// SCK MOSI CS/LOAD/SS
+	DDRB |= (1 << PIN_SCK) | (1 << PIN_MOSI) | (1 << PIN_SS);
+
+	// SPI Enable, Master mode
+	SPCR |= (1 << SPE) | (1 << MSTR)| (1<<SPR1);
 	
-	// Set BCD decode mode for digits DIG0-DIG3
-	rst_bit(PORTB, CS);		 // CS pin is pulled LOW
-	SPI_Write_Byte(0x09);    // Select Decode Mode register
-	SPI_Write_Byte(0x0F);    // Select BCD mode for digits DIG0-DIG3
-	set_bit(PORTB, CS);       // CS pin is pulled HIGH
-	
-	// Set display brightness
-	rst_bit(PORTB, CS);		 // CS pin is pulled LOW
-	SPI_Write_Byte(0x0A);    // Select Intensity register
-	SPI_Write_Byte(0x0a);    // Set maximum brightness
-	set_bit(PORTB, CS);       // CS pin is pulled HIGH
-	
-	// Set display refresh
-	rst_bit(PORTB, CS);		 // CS pin is pulled LOW
-	SPI_Write_Byte(0x0B);    // Select Scan-Limit register
-	SPI_Write_Byte(0x03);    // Select digits DIG0-DIG3
-	set_bit(PORTB, CS);      // CS pin is pulled HIGH
-	
-	// Enable Display-Test
-	rst_bit(PORTB, CS);		 // CS pin is pulled LOW
-	SPI_Write_Byte(0x0F);    // Select Display-Test register
-	SPI_Write_Byte(0x01);    // Enable Display-Test
-	set_bit(PORTB, CS);      // CS pin is pulled HIGH
-	
-	_delay_ms(1000);
-	// Disable Display-Test
-	rst_bit(PORTB, CS);		 // CS pin is pulled LOW
-	SPI_Write_Byte(0x0F);    // Select Display-Test register
-	SPI_Write_Byte(0x00);    // Disable Display-Test
-	set_bit(PORTB, CS);      // CS pin is pulled HIGH
+	// Decode mode to "Font Code-B"
+	MaxDriver::MAX7219_writeData(MAX7219_MODE_DECODE, 0xFF);
+
+	// Scan limit runs from 0.
+	MaxDriver::MAX7219_writeData(MAX7219_MODE_SCAN_LIMIT, digitsInUse - 1);
+	MaxDriver::MAX7219_writeData(MAX7219_MODE_INTENSITY, 8);
+	MaxDriver::MAX7219_writeData(MAX7219_MODE_POWER, ON);
 }
 
-void MaxDriver::displaySignal(unsigned int digit, unsigned int number)
-{
-	rst_bit(PORTB, CS);				// CS pin is pulled LOW
-	SPI_Write_Byte(digit);			// Select the digit
-	SPI_Write_Byte(number);			//Send Number
-	set_bit(PORTB, CS);				// CS pin is pulled HIGH
-	
-}
 
-void MaxDriver::resetDisplay()
+void MaxDriver::MAX7219_displayNumber(volatile long number) 
 {
-	rst_bit(PORTB, CS);			   // CS pin is pulled LOW
-	SPI_Write_Byte(1);			   // Select the digit
-	SPI_Write_Byte(0);			   //Send Number
-	set_bit(PORTB, CS);			   // CS pin is pulled HIGH
-	
-	rst_bit(PORTB, CS);			   // CS pin is pulled LOW
-	SPI_Write_Byte(0);			   // Select the digit
-	SPI_Write_Byte(0);			   //Send Number
-	set_bit(PORTB, CS);			   // CS pin is pulled HIGH
+    char negative = 0;
+
+    // Convert negative to positive.
+    // Keep a record that it was negative so we can
+    // sign it again on the display.
+    if (number < 0) {
+        negative = 1;
+        number *= -1;
+    }
+
+    MaxDriver::MAX7219_clearDisplay();
+
+    // If number = 0, only show one zero then exit
+    if (number == 0) {
+        MaxDriver::MAX7219_writeData(MAX7219_DIGIT0, 0);
+        return;
+    }
+    
+    // Initialization to 0 required in this case,
+    // does not work without it. Not sure why.
+    char i = 0; 
+    
+    // Loop until number is 0.
+    do {
+        MaxDriver::MAX7219_writeData(++i, number % 10);
+        // Actually divide by 10 now.
+        number /= 10;
+    } while (number);
+
+    // Bear in mind that if you only have three digits, and
+    // try to display something like "-256" all that will display
+    // will be "256" because it needs an extra fourth digit to
+    // display the sign.
+    if (negative) {
+        MaxDriver::MAX7219_writeData(i, MAX7219_CHAR_NEGATIVE);
+    }
 }

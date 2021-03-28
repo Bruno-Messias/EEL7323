@@ -95,6 +95,7 @@ void PoolControlerAtmega::FSM()
         time.setTimer(60);
         while (time.getTime() > 0 )
         {
+			
              if (time.getTime() < 5)
              {
 	             low = true;
@@ -103,14 +104,20 @@ void PoolControlerAtmega::FSM()
 			
 			time.coutTimer();
 			PoolControlerAtmega::displayTimer();
-			_delay_ms(60000);
+			_delay_ms(minute);
 			
+			//-- Setting the interrupt
             set_bit(PCMSK0, PCINT0);	//Enable interrupt of reset_bit
             set_bit(PCICR, PCIE0);		//Need to enable for interrupt
               
             sei();						//Initiate check service routine
+			
+			if(flag)
+			{
+				break;
+			}
+			
         }
-		led.resetDisplay();				//Reset the display
 		rst_bit(PCMSK0, PCINT0);		//Disable interrupt of reset_bit
 		rst_bit(PCICR, PCIE0);			//Disable Interrupt
 		rst_bit(PORTB, low_bit);		//Disable low signal
@@ -128,18 +135,22 @@ void PoolControlerAtmega::FSM()
 				low = true;
 				set_bit(PORTB, low_bit); //Enable low signal
 			}
-			
             time.coutTimer();
             PoolControlerAtmega::displayTimer();
-            _delay_ms(60000);
+            _delay_ms(minute);
 			
 			//-- Setting the interrupt
 			set_bit(PCMSK0, PCINT0);	//Enable interrupt of reset_bit
 			set_bit(PCICR, PCIE0);		// Need to enable for interrupt
 			 
 			sei();						//Initiate check service routine
+			
+			if(flag) //Adding flag to stop Timer
+			{
+				break;
+			}
+			
         }
-		led.resetDisplay();				//Reset the display
 		rst_bit(PORTB, low_bit);		//Disable low signal
 		rst_bit(PCMSK0, PCINT0);		//Disable interrupt of reset_bit
 		rst_bit(PCICR, PCIE0);			// Disable Interrupt
@@ -163,7 +174,7 @@ void PoolControlerAtmega::FSM()
         while (time.getTime() > 0)
         {
             time.coutTimer();
-            _delay_ms(60000);
+            _delay_ms(minute);
         }
         pump = false;
 		rst_bit(PORTB, pump_bit);
@@ -186,7 +197,6 @@ void PoolControlerAtmega::Inputs()
 			{
 				reset = true;
 			}
-			else reset = false;
 			break;
 		case 1: //INIT
 			//Next Estate
@@ -218,21 +228,7 @@ void PoolControlerAtmega::displayTimer()
 {
 	value = time.getTime();
 	
-	//Break apart the digits for the 7 segment Display 
-	if(value > 9)
-	{
-		value1 = int(value/10);			//most significant bit
-		value2 = value%10;				//least significant bit	
-	}
-	else 
-	{
-		value1 = 0;
-		value2 = value;
-	}
-	
-	//Send the digits to 7 segment
-	led.displaySignal(1, value1);
-	led.displaySignal(0, value2);
+	led.MAX7219_displayNumber(value);
 }
 
 ISR(PCINT0_vect) //Interrupt Service Routine
