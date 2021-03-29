@@ -131,5 +131,6 @@ PoolControler/PoolControler_AVR/PoolControler_AVR/PoolControler_AVR/Debug/Makefi
 *.srec
 *.xml
 *.cppproj
+*.workspace
 PoolControler/Proteus/Backup Of PoolControler.pdsbak
 PoolControler/Proteus/Last Loaded PoolControler.pdsbak
