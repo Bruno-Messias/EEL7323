@@ -1,7 +1,8 @@
 #ifndef MAX7219_H
 #define MAX7219_H
 
-#define F_CPU 1000000 // frequency oscillator
+//#define F_CPU 1000000 // frequency oscillator for simulation
+#define F_CPU 16000000UL
 
 #define ON                        1
 #define OFF                       0

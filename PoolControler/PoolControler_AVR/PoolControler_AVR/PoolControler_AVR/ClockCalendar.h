@@ -1,25 +1,23 @@
-class Clock {
-	protected:
-	int hr, min, sec, isPm;
-	public:
-	Clock (int h, int m, int s, int pm);
-	void setClock (int h, int m, int s, int pm);
-	void readClock (int& h, int& m, int& s, int& pm);
-	void advance ();
-};
+#ifndef CLOCKCALENDAR
+#define CLOCKCALENDAR
 
-class Calendar {
-	protected:
-	int mo, day, yr;
-	public:
-	Calendar (int m, int d, int y);
-	void setCalendar (int m, int d, int y);
-	void readCalendar (int& m, int& d, int& y);
-	void advance ();
-};
+#include <iostream>
+#include <iomanip>
+
+#include "Clock.cpp"
+#include "Calendar.cpp"
+
+using namespace std;
 
 class ClockCalendar : public Clock, public Calendar {
-	public:
-	ClockCalendar (int mt, int d, int y, int h, int m, int s, int pm);
-	void advance ();
+public:
+	inline ClockCalendar(unsigned int year, unsigned int month, unsigned int day, unsigned int hour, unsigned int min, unsigned int sec, bool isPM);
+	inline void advance();
+	inline void writeClock();
+	inline void showClock();
+private:
+	unsigned int year, month, day, hour, min, sec;
+	bool isPM;
 };
+
+#endif		// CLOCKCALENDAR

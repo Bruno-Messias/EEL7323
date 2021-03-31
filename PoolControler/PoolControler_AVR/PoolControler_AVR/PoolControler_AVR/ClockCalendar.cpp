@@ -1,58 +1,32 @@
-﻿
 #include "ClockCalendar.h"
 
-Clock::Clock (int h, int m, int s, int pm){
-	hr = h;
-	min = m;
-	sec = s;
-	isPm = pm;
-}
-void Clock::setClock (int h, int m, int s, int pm){
-	hr = h;
-	min = m;
-	sec = s;
-	isPm = pm;
-}
-void Clock::readClock (int& h, int& m, int& s, int& pm){
-	h = hr;
-	m = min;
-	s = sec;
-	pm = isPm;
-}
-void Clock::advance (){
-	if (sec < 59)
-	sec++;
-	else {
-		sec = 0;
-		if (min < 59)
-		min++;
-		else {
-			min = 0;
-			if (hr < 12)
-			hr++;
-			else {
-				hr = 0;
-			}
-		}
-	}
-}
+inline ClockCalendar::ClockCalendar(unsigned int year, unsigned int month, unsigned int day, unsigned int hour, unsigned int min, unsigned int sec, bool isPM)
+	: Clock(hour, min, sec, isPM), Calendar(year, month, day) { }
 
-
-
-Calendar::Calendar (int m, int d, int y){};
-
-void Calendar::setCalendar (int m, int d, int y){};
-
-void Calendar::readCalendar (int& m, int& d, int& y){};
-
-void Calendar::advance (){};
-
-ClockCalendar::ClockCalendar (int mt, int d, int y, int h, int m, int s, int pm) : Clock (h, m, s, pm), Calendar (mt, d, y){
-}
-
-void ClockCalendar::advance (){ // avancar o calendario, caso o clock
-	int wasPm = isPm;       // mude de AM para PM.
+inline void ClockCalendar::advance() {
+	bool wasPm = Clock::isPM; // save current pm.
 	Clock::advance();
-	if (wasPm && !isPm)
-	Calendar::advance();
+	if ((wasPm == true) && (Clock::isPM == false))
+		Calendar::advance();
+}
+
+inline void ClockCalendar::writeClock() {
+	std::cout << setw(4) << setfill('0') << year;
+	std::cout << "/";
+	std::cout << setw(2) << setfill('0') << month;
+	std::cout << "/";
+	std::cout << setw(2) << setfill('0') << day;
+	std::cout << " - ";
+	std::cout << setw(2) << setfill('0') << hour;
+	std::cout << ":";
+	std::cout << setw(2) << setfill('0') << min;
+	std::cout << ":";
+	std::cout << setw(2) << setfill('0') << sec;
+	std::cout << (isPM ? " pm" : " am") << std::endl;
+}
+
+inline void ClockCalendar::showClock() {
+	Calendar::readCalendar(year, month,day);
+	Clock::readClock(hour, min, sec, isPM);
+	ClockCalendar::writeClock();
 }
