@@ -72,12 +72,13 @@ int main(void)
 	//
 	//while 
 	//{
-		    //Controler.Inputs();
+			//Controler.Inputs();
 		    //Controler.Outputs();
 		    //Controler.FSM();
+			//Controler.checkLog();
 			//if(flag)
 			//{
-				//Controler.setEstate(1);  //If interrupt occur the next estate is INIT to reset the timer
+				//Controler.setEstate(1);  //If interrupt occur the next estate is INIT to reset the timer and initiate system
 				//flag = false;
 			//}
 	//}

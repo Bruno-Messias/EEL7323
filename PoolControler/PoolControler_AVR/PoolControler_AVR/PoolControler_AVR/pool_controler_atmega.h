@@ -22,6 +22,7 @@ class PoolControlerAtmega : public PoolControler
 	Timer time;
 	MaxDriver led;
 	int estate, value;
+	//TODO: delete debug functions
 	bool timeout, pump, heater, reset, sw, low, init;
 	unsigned char event;
 public:
