@@ -22,13 +22,16 @@ low -> PB1 -> d9
 display(d7.d6.d5) -> PD's(5,6,7)
 */
 
-//-- Defining Pins
+//TODO: change some pins to use arduino interface pins with crystal oscillator use D's port
+
+//-- Defining Pins 
 #define pump_bit PORTB7
 #define heater_bit PORTB6
 #define reset_bit PORTB0
 #define sw_bit PORTB4
 #define low_bit PORTB1
 
+// Define for SPI transmitter pins
 #define PIN_SCK PORTB5
 #define PIN_MOSI PORTB3
 #define PIN_SS PORTB2
