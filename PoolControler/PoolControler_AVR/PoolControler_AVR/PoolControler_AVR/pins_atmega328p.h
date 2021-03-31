@@ -4,6 +4,9 @@
 //Pins Avr
 #include <avr/io.h>
 
+#define F_CPU 1000000 // frequency oscillator for simulation
+//#define F_CPU 16000000UL
+
 //-- Defining Macros for pins
 
 //set a bit in a register

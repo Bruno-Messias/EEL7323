@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#define sec 1000
+#define secs 1000
 #define minute 60000
 
 class PoolControlerWindowns: public PoolControler

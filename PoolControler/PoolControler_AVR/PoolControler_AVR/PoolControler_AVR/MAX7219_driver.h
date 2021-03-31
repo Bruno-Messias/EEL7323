@@ -1,8 +1,7 @@
 #ifndef MAX7219_H
 #define MAX7219_H
 
-//#define F_CPU 1000000 // frequency oscillator for simulation
-#define F_CPU 16000000UL
+#include "pins_atmega328p.h"
 
 #define ON                        1
 #define OFF                       0
@@ -17,8 +16,6 @@
 #define MAX7219_MODE_TEST         0x0F
 #define MAX7219_MODE_NOOP         0x00
 
-// I only have 3 digits, no point having the
-// rest. You could use more though.
 #define MAX7219_DIGIT0            0x01
 #define MAX7219_DIGIT1            0x02
 #define MAX7219_DIGIT2            0x03
@@ -28,7 +25,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "pins_atmega328p.h"
+
 
 char digitsInUse = 4;
 

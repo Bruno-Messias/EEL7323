@@ -21,20 +21,14 @@ PoolControlerAtmega::PoolControlerAtmega()
 	rst_bit(PORTB, low_bit);
 	
 	//-- Disable Interrupts --
-	rst_bit(PCMSK0, PCINT0);		//Disable interrupt of reset_bit
-	rst_bit(PCICR, PCIE0);			// Disable Interrupt
+	rst_bit(PCMSK0, PCINT0);				//Disable interrupt of reset_bit
+	rst_bit(PCICR, PCIE0);					// Disable Interrupt
 	
-	led.MAX7219_INIT();				//Initiate MAx7239
-	
-	/* -- Only for debugging --*/
-	pump = false; //out
-	heater = false; //out
-	timeout = false; //no
-	reset = false; //in
-	low = false; //out
+	led.MAX7219_INIT();						//Initiate MAx7239
+	cc.setCalendar(2021,4,1,0,0,0);			//Set ClockCalendar for 1/4/2021 00:00:00
 }
 
-void PoolControlerAtmega::inputSW() //Test for admin choose
+void PoolControlerAtmega::inputSW() //Test for Admin choose
 {
     if(test_bit(PINB, sw_bit))
 	{
@@ -49,39 +43,34 @@ void PoolControlerAtmega::FSM() //Logic for next estate
     {
     case 0: //RESET
 
-		/* -- Only for debugging --*/
-        timeout = true;
-        pump = false;
-        heater = false;
-        low = false;
-		
 		/* Setting estate output */
 		rst_bit(PORTB, pump_bit);
 		rst_bit(PORTB, heater_bit);
 		rst_bit(PORTB, low_bit);
-
-        //Next Estate
-        if (reset) //TODO: implement interrupt base eliminate the next estate logic and input -> goto while logic
-        {
-            estate = 1;
-			init = true //For check log
-            break;
-        }
-        else
-        {
-            estate = 0;
-            break;
-        }
+		
+		//-- Setting the interrupt
+		set_bit(PCMSK0, PCINT0);		//Enable interrupt of reset_bit
+		set_bit(PCICR, PCIE0);			// Need to enable for interrupt
+		
+		sei();						//Initiate check service routine
+		
+		while(1)
+		{
+			if(flag)
+			{
+				init = true;
+				break;
+			}
+			cc.advance();				// Advance Clock
+			_delay_ms(secs);
+		}
 		
     case 1: //INIT
 
         init = false;
 		
-		/* -- Only for debugging --*/
-		reset = false;
-        timeout = false;
-        pump = true;
-        heater = true;
+		rst_bit(PCMSK0, PCINT0);		//Disable interrupt of reset_bit
+		rst_bit(PCICR, PCIE0);			//Disable Interrupt
 		
 		/* Setting estate output */
 		set_bit(PORTB, pump_bit);
@@ -99,7 +88,10 @@ void PoolControlerAtmega::FSM() //Logic for next estate
             estate = 2;
             break;
         }
+		
     case 2: //ON1 - 60min config
+	
+		//TODO: ADD control of coutTime for only minute 
 
         //Next Estate:
         time.setTimer(60);
@@ -108,14 +100,13 @@ void PoolControlerAtmega::FSM() //Logic for next estate
 			
              if (time.getTime() < 5)
              {
-	             low = true;					//! For debug
-				 set_bit(PORTB, low_bit);		//Enable Low Signal
+				 set_bit(PORTB, low_bit);			//Enable Low Signal
              }
 			
 			time.coutTimer();						//Advance Timer
 			cc.advance();							// Advance Clock
 			PoolControlerAtmega::displayTimer();	//Send Timer via SPI for display
-			_delay_ms(minute);
+			_delay_ms(secs);
 			
 			//-- Setting the interrupt
             set_bit(PCMSK0, PCINT0);	//Enable interrupt of reset_bit
@@ -137,19 +128,20 @@ void PoolControlerAtmega::FSM() //Logic for next estate
 
     case 3: //ON2 - 30min config
 
+		//TODO: ADD control of coutTime for only minute
+
         //Next Estate:
-        time.setTimer(30);					//Set timer for 30 minutes
+        time.setTimer(30);							//Set timer for 30 minutes
         while (time.getTime() > 0) 
         {
-			if (time.getTime() < 5)			//Check for low timer alert
+			if (time.getTime() < 5)					//Check for low timer alert
 			{
-				low = true;					//! For debug
-				set_bit(PORTB, low_bit);	//Enable low signal
+				set_bit(PORTB, low_bit);			//Enable low signal
 			}
-            time.coutTimer();				//Advance Timer
-			cc.advance();					//Advance Clock
-            PoolControlerAtmega::displayTimer();
-            _delay_ms(minute);
+            time.coutTimer();						//Advance Timer
+			cc.advance();							//Advance Clock
+            PoolControlerAtmega::displayTimer();	//Send Timer via SPI for display
+            _delay_ms(secs);
 			
 			//-- Setting the interrupt
 			set_bit(PCMSK0, PCINT0);		//Enable interrupt of reset_bit
@@ -170,11 +162,6 @@ void PoolControlerAtmega::FSM() //Logic for next estate
         break;
     case 4: //OFF1
 
-       /* -- Only for debugging --*/
-	    timeout = true;
-        heater = false;
-        low = false;
-		
 		/* Setting estate output */
 		rst_bit(PORTB, heater_bit);
 
@@ -184,15 +171,13 @@ void PoolControlerAtmega::FSM() //Logic for next estate
     case 5: //OFF2
 
         //Next Estate:
-        time.setTimer(1);		//Set Timer for 1 minute
+        time.setTimer(1);				//Set Timer for 1 minute
         while (time.getTime() > 0)	
         {
-            time.coutTimer();	//Advance Timer
-			cc.advance();		//Advance Clock
-            _delay_ms(minute);
+            time.coutTimer();			//Advance Timer
+			cc.advance();				//Advance Clock
+            _delay_ms(secs);
         }
-		
-        pump = false;	//! For debug
 		
 		/* Setting estate output */
 		rst_bit(PORTB, pump_bit);
@@ -205,40 +190,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
     }
 
 } 
-
-//TODO Delete this functions
-void PoolControlerAtmega::Inputs()
-{
-    switch (estate)
-    {
-	    case 0: //RESET
-			if(test_bit(PINB, reset_bit)) //Wait until reset pin is pressed
-			{
-				reset = true;
-			}
-			break;
-		case 1: //INIT
-			//Next Estate
-			break;
-	    case 2: //ON1
-			break;
-	    case 3: //ON2
-			//Next Estate
-			break;
-	    case 4: //OFF1
-			//Next Estate
-			break;
-	    case 5: //OFF2
-			//Next Estate
-			break;
-	    default:
-			break;
-    }
-}
-
-//TODO delete this function
-void PoolControlerAtmega::Outputs() { }
-
+	
 void PoolControlerAtmega::setEstate(int newEstate)
 {
 	estate = newEstate;
@@ -246,27 +198,25 @@ void PoolControlerAtmega::setEstate(int newEstate)
 
 void PoolControlerAtmega::displayTimer()
 {
-	value = time.getTime();
+	value = time.getTime();				//Get time  for display in max7219 driver
+	led.MAX7219_displayNumber(value);	//Send Value to MAX7219 driver via SPI
 	
-	led.MAX7219_displayNumber(value);
 }
 
-unsigned char PoolControlerAtmega::checkLog()
+void PoolControlerAtmega::checkLog()
 {
-	if(estate == 4 && (!flag))
+	if(estate == 5)					//Check for timeout
 	{
-		return 'a';
+		event = 'a';
 	}
-	if else(flag)
+	else if(estate == 0 && flag)	//Check reset timer
 	{
-		return 'c';
+		event = 'c';
 	}
-	if else(init)
+	else if(init)					//Check for initialization of system
 	{
-		return 'b';
+		event = 'b';
 	}
-	else return 'd';
-	
 	
 }
 

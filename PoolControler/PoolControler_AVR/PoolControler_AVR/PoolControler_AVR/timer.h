@@ -5,8 +5,6 @@
 class Timer {
 	int timer;
 public:
-	Timer();
-	~Timer();
 	void coutTimer();
 	void setTimer(int);
 	int getTime();
