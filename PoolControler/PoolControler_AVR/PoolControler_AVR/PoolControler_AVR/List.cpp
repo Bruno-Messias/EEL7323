@@ -15,7 +15,7 @@ List::~List() {
 	head = 0; // Officially empty
 }
 
-void List::insertAfterLast(std::string dat) {
+void List::insertAfterLast(char* dat) {
 	Node* p = head;
 	Node* q = head;
 
@@ -30,11 +30,9 @@ void List::insertAfterLast(std::string dat) {
 	}
 }
 
-std::string List::removeFirst() {
-	std::string retval = "";
+char* List::removeFirst() {
+	char *retval = 0;
 	if (head != 0) {
-		cout << "Removendo: " << head << endl;
-		cout << "e fica:" << head->getVal() << endl;
 		retval = head->getVal();
 		Node* oldHead = head;
 		head = head->getNext();

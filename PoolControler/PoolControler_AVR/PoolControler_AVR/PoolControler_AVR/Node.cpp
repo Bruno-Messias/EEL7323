@@ -3,14 +3,14 @@
 
 // Constructor - initializes the node
 //
-Node::Node(std::string dat, Node* nxt) {
+Node::Node(char* dat, Node* nxt) {
     val = dat;
     next = nxt;
 }
 
 // getVal returns the integer value stored in the node
 //
-std::string Node::getVal() {
+char* Node::getVal() {
     return val;
 }
 

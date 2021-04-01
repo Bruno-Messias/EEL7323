@@ -31,8 +31,6 @@ PoolControlerAtmega::PoolControlerAtmega()
 	USART0_Init(MYUBBR);
 }
 
-
-
 void PoolControlerAtmega::inputSW() //Test for Admin choose
 {
     if(test_bit(PINB, sw_bit))
@@ -210,20 +208,63 @@ void PoolControlerAtmega::displayTimer()
 
 void PoolControlerAtmega::checkLog()
 {
+	char event[] = "";
+	
 	if(estate == 5)					//Check for timeout
 	{
-		event = 'a';
+		char event_log[] = "a";
+		strcat(event, event_log);
+		PoolControlerAtmega::createLog(event);
 	}
 	else if(estate == 0 && flag)	//Check reset timer
 	{
-		event = 'c';
+		char event_log[] = "c";
+		strcat(event, event_log);
+		PoolControlerAtmega::createLog(event);
 	}
 	else if(init)					//Check for initialization of system
 	{
-		event = 'b';
+		char event_log[] = "b";
+		strcat(event, event_log);
+		PoolControlerAtmega::createLog(event);
 	}
 	
 }
+
+void PoolControlerAtmega::createLog(char* event)
+{
+	char ano_s[4], mes_s[2], dia_s[2], hora_s[2], min_s[2], sec_s[2]; 
+	char doublepoints[] = ":";
+	char backslash[] = "/";
+	itoa(cc.getAno(), ano_s, 10);
+	itoa(cc.getMes(), mes_s, 10);
+	itoa(cc.getDia(), dia_s, 10);
+	itoa(cc.getHora(), hora_s, 10);
+	itoa(cc.getMinuto(), min_s, 10);
+	itoa(cc.getSegundo(), sec_s, 10);
+	
+	// concatenating the string.
+	strcat(log, ano_s);
+	strcat(log, doublepoints);
+	strcat(log, mes_s);
+	strcat(log, doublepoints);
+	strcat(log, dia_s);
+	strcat(log, doublepoints);
+	strcat(log, hora_s);
+	strcat(log, doublepoints);
+	strcat(log, min_s);
+	strcat(log, doublepoints);
+	strcat(log, sec_s);
+	strcat(log, backslash);
+	
+	data.insertAfterLast(log);
+}
+
+void PoolControlerAtmega::sendlog()
+{
+	USART_putstring(data.removeFirst());
+}
+
 
 ISR(PCINT0_vect) //Interrupt Service Routine
 {

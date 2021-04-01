@@ -29,11 +29,9 @@ Objetivos:
 Envio via UART
 Mandar a Fila do Atmega e ser esvaziadaa -> estrutura no computador armazenar em lista esses dados(armazenar em .log no pc)
 */
-
 	
 int main(void)
 {
-	
 	PoolControlerAtmega Controler;
 
 	while (1)
@@ -47,6 +45,9 @@ int main(void)
 			Controler.setEstate(1);  //If interrupt occur the next estate is INIT to reset the timer
 			flag = false;
 		}
+		Controler.checkLog();
+		//TODO: add check if UART is connected
+		Controler.sendlog();
 	}
 	return 0;
 }
