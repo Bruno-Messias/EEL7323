@@ -26,7 +26,12 @@ PoolControlerAtmega::PoolControlerAtmega()
 	
 	led.MAX7219_INIT();						//Initiate MAx7239
 	cc.setCalendar(2021,4,1,0,0,0);			//Set ClockCalendar for 1/4/2021 00:00:00
+	
+	/* Initiate with calculate Baudrate -> for 16MH 9600  */
+	USART0_Init(MYUBBR);
 }
+
+
 
 void PoolControlerAtmega::inputSW() //Test for Admin choose
 {

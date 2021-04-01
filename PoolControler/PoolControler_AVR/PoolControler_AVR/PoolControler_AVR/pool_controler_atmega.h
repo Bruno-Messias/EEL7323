@@ -7,17 +7,21 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include <string.h>
 
 #include "pins_atmega328p.h"
 #include "pool_controler.cpp"
 #include "ClockCalendar.h"
 #include "timer.cpp"
+//#include "List.cpp"
+#include "USART.cpp"
 
 #define secs 1000
 #define minute 60000
 
 class PoolControlerAtmega : public PoolControler
 {
+	//List data;
 	ClockCalendar cc; 
 	Timer time;
 	MaxDriver led;

@@ -3,6 +3,7 @@
 
 //Pins Avr
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #define F_CPU 1000000 // frequency oscillator for simulation
 //#define F_CPU 16000000UL
