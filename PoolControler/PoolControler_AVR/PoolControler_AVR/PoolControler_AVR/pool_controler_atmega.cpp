@@ -1,5 +1,7 @@
 #include "pool_controler_atmega.h"
 
+//Chabge pump and heater
+
 PoolControlerAtmega::PoolControlerAtmega()
 {
     estate = 0; // control the actual estate
@@ -9,15 +11,15 @@ PoolControlerAtmega::PoolControlerAtmega()
 	init = false; //for check log
 	
 	//-- Define in's and out's --
-	set_bit(DDRB, pump_bit);
-	set_bit(DDRB, heater_bit);
+	set_bit(DDRD, pump_bit);
+	set_bit(DDRD, heater_bit);
 	set_bit(DDRB, low_bit);
 	rst_bit(DDRB, sw_bit);
 	rst_bit(DDRB, reset_bit);
 	
 	// -- Initiate Out bits --
-	rst_bit(PORTB, pump_bit);
-	rst_bit(PORTB, heater_bit);
+	rst_bit(PORTD, pump_bit);
+	rst_bit(PORTD, heater_bit);
 	rst_bit(PORTB, low_bit);
 	
 	//-- Disable Interrupts --
@@ -47,8 +49,8 @@ void PoolControlerAtmega::FSM() //Logic for next estate
     case 0: //RESET
 
 		/* Setting estate output */
-		rst_bit(PORTB, pump_bit);
-		rst_bit(PORTB, heater_bit);
+		rst_bit(PORTD, pump_bit);
+		rst_bit(PORTD, heater_bit);
 		rst_bit(PORTB, low_bit);
 		
 		//-- Setting the interrupt
@@ -76,8 +78,8 @@ void PoolControlerAtmega::FSM() //Logic for next estate
 		rst_bit(PCICR, PCIE0);			//Disable Interrupt
 		
 		/* Setting estate output */
-		set_bit(PORTB, pump_bit);
-		set_bit(PORTB, heater_bit);
+		set_bit(PORTD, pump_bit);
+		set_bit(PORTD, heater_bit);
 		rst_bit(PORTB, low_bit);
 
         //Next Estate:
@@ -181,7 +183,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
     case 4: //OFF1
 
 		/* Setting estate output */
-		rst_bit(PORTB, heater_bit);
+		rst_bit(PORTD, heater_bit);
 
         //Next Estate
         estate = 5;
@@ -199,7 +201,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
         }
 		
 		/* Setting estate output */
-		rst_bit(PORTB, pump_bit);
+		rst_bit(PORTD, pump_bit);
         estate = 0;
         break;
 
