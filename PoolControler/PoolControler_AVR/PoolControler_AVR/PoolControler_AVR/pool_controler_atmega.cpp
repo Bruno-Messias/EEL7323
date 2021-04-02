@@ -31,6 +31,7 @@ PoolControlerAtmega::PoolControlerAtmega()
 	
 	/* -- Initiate with 9600 Baudrate --*/
 	USART0_Init(MYUBBR);
+	sei();
 }
 
 void PoolControlerAtmega::inputSW() //Test for Admin choose
@@ -109,7 +110,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
 				 set_bit(PORTB, low_bit);			//Enable Low Signal
              }
 			 
-			if(counter == 60)						//Control for minute advance
+			if(counter >= 60)						//Control for minute advance
 			{
 				time.coutTimer();					//Advance Timer	
 				counter = 0;
@@ -141,7 +142,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
     case 3: //ON2 - 30min config
 	
 		counter = 0;			//Control for minute advance
-		 time.setTimer(30);		//Set timer for 30 minutes
+		time.setTimer(30);		//Set timer for 30 minutes
 		 
         //Next Estate:		
         while (time.getTime() > 0) 
@@ -151,7 +152,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
 				set_bit(PORTB, low_bit);			//Enable low signal
 			}
 			
-			if(counter == 60)						//Control for minute advance
+			if(counter >= 60)						//Control for minute advance
 			{
 				time.coutTimer();					//Advance Timer
 				counter = 0;
@@ -192,7 +193,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
     case 5: //OFF2
 
         //Next Estate:
-        time.setTimer(1);				//Set Timer for 1 minute
+        time.setTimer(60);				//Set Timer for 1 minute
         while (time.getTime() > 0)	
         {
             time.coutTimer();			//Advance Timer
