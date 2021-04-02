@@ -1,5 +1,4 @@
 #include "pool_controler_atmega.h"
-#include "pool_controler.cpp"
 
 PoolControlerAtmega::PoolControlerAtmega()
 {
@@ -194,37 +193,37 @@ void PoolControlerAtmega::FSM() //Logic for next estate
 
 } 
 	
-void PoolControlerAtmega::setEstate(int newEstate)
+void PoolControlerAtmega::setEstate(int newEstate) //Set a new state of the Controller
 {
 	estate = newEstate;
-}
+} 
 
-void PoolControlerAtmega::displayTimer()
+void PoolControlerAtmega::displayTimer() //Send information to the log 
 {
 	value = time.getTime();				//Get time  for display in max7219 driver
 	led.MAX7219_displayNumber(value);	//Send Value to MAX7219 driver via SPI
 	
-}
+} 
 
-void PoolControlerAtmega::checkLog()
+void PoolControlerAtmega::checkLog() //Check for Event to store a log
 {
 	char event[] = "";
 	
 	if(estate == 5)					//Check for timeout
 	{
-		char event_log[] = "a";
+		char event_log[] = "a\n";
 		strcat(event, event_log);
 		PoolControlerAtmega::createLog(event);
 	}
 	else if(estate == 0 && flag)	//Check reset timer
 	{
-		char event_log[] = "c";
+		char event_log[] = "c\n";
 		strcat(event, event_log);
 		PoolControlerAtmega::createLog(event);
 	}
 	else if(init)					//Check for initialization of system
 	{
-		char event_log[] = "b";
+		char event_log[] = "b\n";
 		strcat(event, event_log);
 		PoolControlerAtmega::createLog(event);
 	}
@@ -233,9 +232,12 @@ void PoolControlerAtmega::checkLog()
 
 void PoolControlerAtmega::createLog(char* event)
 {
-	char ano_s[4], mes_s[2], dia_s[2], hora_s[2], min_s[2], sec_s[2]; 
+	char log[] = "1/";
+	char ano_s[5], mes_s[3], dia_s[3], hora_s[3], min_s[3], sec_s[3]; 
 	char doublepoints[] = ":";
 	char backslash[] = "/";
+	
+	/*-- Getting ClockCalendar Information --*/
 	itoa(cc.getAno(), ano_s, 10);
 	itoa(cc.getMes(), mes_s, 10);
 	itoa(cc.getDia(), dia_s, 10);
@@ -243,7 +245,7 @@ void PoolControlerAtmega::createLog(char* event)
 	itoa(cc.getMinuto(), min_s, 10);
 	itoa(cc.getSegundo(), sec_s, 10);
 	
-	// concatenating the string.
+	/* -- Concatenating the string to store */
 	strcat(log, ano_s);
 	strcat(log, doublepoints);
 	strcat(log, mes_s);
@@ -256,17 +258,18 @@ void PoolControlerAtmega::createLog(char* event)
 	strcat(log, doublepoints);
 	strcat(log, sec_s);
 	strcat(log, backslash);
+	strcat(log, event);
 	
-	data.insertAfterLast(log);
+	data.insertAfterLast(log); //Store the log in the data structure
 }
 
-void PoolControlerAtmega::sendlog()
+void PoolControlerAtmega::sendlog() //Send LOG via UART
 {
 	USART_putstring(data.removeFirst());
 }
 
 
-ISR(PCINT0_vect) //Interrupt Service Routine
+ISR(PCINT0_vect) //Interrupt Service Routine of reset button(PORTB0)
 {
 	flag = true;
 }

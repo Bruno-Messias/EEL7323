@@ -5,10 +5,12 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define F_CPU 1000000 // frequency oscillator for simulation
-//#define F_CPU 16000000UL
+//#define F_CPU 1000000 // frequency oscillator for simulation
+#define F_CPU 16000000
 
-//-- Defining Macros for pins
+#include <util/delay.h>
+
+/* -- Defining Macros for pins -- */
 
 //set a bit in a register
 #define set_bit(reg,bit)	(reg |= (1<<bit))

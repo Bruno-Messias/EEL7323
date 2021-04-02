@@ -1,12 +1,8 @@
 #ifndef POOL_CONTROLER_ATMEGA_H
 #define POOL_CONTROLER_ATMEGA_H
 
-
 #include "MAX7219_driver.cpp"
 
-#include <avr/io.h>
-#include <util/delay.h>
-#include <avr/interrupt.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -24,7 +20,6 @@
 class PoolControlerAtmega : public PoolControler
 {
 	List data;
-	char log[2];
 	ClockCalendar cc; 
 	Timer time;
 	MaxDriver led;

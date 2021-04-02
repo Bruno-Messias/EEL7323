@@ -1,9 +1,7 @@
 
-
 //-- For using USART
-#define FOSC 16000000
 #define BAUD 9600
-#define MYUBBR FOSC/16/BAUD-1
+#define MYUBBR F_CPU/16/BAUD-1
 
 /* USART Buffer Defines */
 #define USART_RX_BUFFER_SIZE 8     /* 2,4,8,16,32,64,128 or 256 bytes */

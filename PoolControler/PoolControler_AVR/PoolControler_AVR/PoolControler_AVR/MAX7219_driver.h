@@ -23,10 +23,6 @@
 #define MAX7219_CHAR_BLANK        0xF
 #define MAX7219_CHAR_NEGATIVE     0xA
 
-#include <avr/io.h>
-#include <util/delay.h>
-
-
 char digitsInUse = 4;
 
 class MaxDriver
