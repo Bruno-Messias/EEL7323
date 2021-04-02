@@ -11,13 +11,9 @@
 #include <util/delay.h>
 
 /* -- Defining Macros for pins -- */
-
-//set a bit in a register
-#define set_bit(reg,bit)	(reg |= (1<<bit))
-// reset a bit in a register
-#define rst_bit(reg,bit)	(reg &= ~(1<<bit))
-// test a bit
-#define test_bit(reg,bit)	(reg & (1<<bit)) //Press -> low
+#define set_bit(reg,bit)	(reg |= (1<<bit)) //set a bit in a register
+#define rst_bit(reg,bit)	(reg &= ~(1<<bit)) // reset a bit in a register
+#define test_bit(reg,bit)	(reg & (1<<bit)) // test a bit
 
 /*
 pump -> PB3 -> d11
@@ -36,6 +32,8 @@ display(d7.d6.d5) -> PD's(5,6,7)
 #define reset_bit PORTB0
 #define sw_bit PORTB4
 #define low_bit PORTB1
+
+//
 
 // Define for SPI transmitter pins
 #define PIN_SCK PORTB5

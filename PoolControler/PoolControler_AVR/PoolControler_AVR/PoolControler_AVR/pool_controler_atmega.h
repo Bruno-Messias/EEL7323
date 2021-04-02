@@ -23,7 +23,7 @@ class PoolControlerAtmega : public PoolControler
 	ClockCalendar cc; 
 	Timer time;
 	MaxDriver led;
-	int estate, value;
+	int estate, value, counter;
 	bool init,sw;
 public:
 	PoolControlerAtmega();

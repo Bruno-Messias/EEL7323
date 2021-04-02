@@ -3,6 +3,7 @@
 PoolControlerAtmega::PoolControlerAtmega()
 {
     estate = 0; // control the actual estate
+	counter = 0; //Control the minute advance timer
 	
 	sw = false; //in
 	init = false; //for check log
@@ -26,7 +27,7 @@ PoolControlerAtmega::PoolControlerAtmega()
 	led.MAX7219_INIT();						//Initiate MAx7239
 	cc.setCalendar(2021,4,1,0,0,0);			//Set ClockCalendar for 1/4/2021 00:00:00
 	
-	/* Initiate with calculate Baudrate -> for 16MH 9600  */
+	/* -- Initiate with 9600 Baudrate --*/
 	USART0_Init(MYUBBR);
 }
 
@@ -93,10 +94,11 @@ void PoolControlerAtmega::FSM() //Logic for next estate
 		
     case 2: //ON1 - 60min config
 	
-		//TODO: ADD control of coutTime for only minute 
-
+		counter = 0;				//Control for minute advance
+		time.setTimer(60);			//Set timer for 60 minutes
+		
         //Next Estate:
-        time.setTimer(60);
+
         while (time.getTime() > 0 )
         {
 			
@@ -104,11 +106,17 @@ void PoolControlerAtmega::FSM() //Logic for next estate
              {
 				 set_bit(PORTB, low_bit);			//Enable Low Signal
              }
+			 
+			if(counter == 60)						//Control for minute advance
+			{
+				time.coutTimer();					//Advance Timer	
+				counter = 0;
+			}
 			
-			time.coutTimer();						//Advance Timer
 			cc.advance();							// Advance Clock
 			PoolControlerAtmega::displayTimer();	//Send Timer via SPI for display
 			_delay_ms(secs);
+			counter++;
 			
 			//-- Setting the interrupt
             set_bit(PCMSK0, PCINT0);	//Enable interrupt of reset_bit
@@ -129,21 +137,28 @@ void PoolControlerAtmega::FSM() //Logic for next estate
         break;
 
     case 3: //ON2 - 30min config
-
-		//TODO: ADD control of coutTime for only minute
-
-        //Next Estate:
-        time.setTimer(30);							//Set timer for 30 minutes
+	
+		counter = 0;			//Control for minute advance
+		 time.setTimer(30);		//Set timer for 30 minutes
+		 
+        //Next Estate:		
         while (time.getTime() > 0) 
         {
 			if (time.getTime() < 5)					//Check for low timer alert
 			{
 				set_bit(PORTB, low_bit);			//Enable low signal
 			}
-            time.coutTimer();						//Advance Timer
+			
+			if(counter == 60)						//Control for minute advance
+			{
+				time.coutTimer();					//Advance Timer
+				counter = 0;
+			}
+			
 			cc.advance();							//Advance Clock
             PoolControlerAtmega::displayTimer();	//Send Timer via SPI for display
             _delay_ms(secs);
+			counter++;
 			
 			//-- Setting the interrupt
 			set_bit(PCMSK0, PCINT0);		//Enable interrupt of reset_bit
@@ -162,6 +177,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
 		rst_bit(PCICR, PCIE0);			// Disable Interrupt
 		estate = 4;
         break;
+		
     case 4: //OFF1
 
 		/* Setting estate output */
@@ -170,6 +186,7 @@ void PoolControlerAtmega::FSM() //Logic for next estate
         //Next Estate
         estate = 5;
         break;
+		
     case 5: //OFF2
 
         //Next Estate:
@@ -190,7 +207,6 @@ void PoolControlerAtmega::FSM() //Logic for next estate
         estate = 0;
         break;
     }
-
 } 
 	
 void PoolControlerAtmega::setEstate(int newEstate) //Set a new state of the Controller
