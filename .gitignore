@@ -135,3 +135,5 @@ PoolControler/PoolControler_AVR/PoolControler_AVR/PoolControler_AVR/Debug/Makefi
 PoolControler/Proteus/Backup Of PoolControler.pdsbak
 PoolControler/Proteus/Last Loaded PoolControler.pdsbak
 PoolControler/Datalog/Makefile
+*.json
+PoolControler/Datalog/DataLog
