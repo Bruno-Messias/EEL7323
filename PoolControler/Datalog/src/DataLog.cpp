@@ -54,6 +54,10 @@ int DataLog::setInit()
 int DataLog::readLog() 
 {
    char read_buf[256];
+   string log;
+
+    memset(&read_buf, '\0', sizeof(read_buf));
+
     //Getting number of bytes received to check if is something to read
     int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
 
@@ -62,18 +66,18 @@ int DataLog::readLog()
         cout << "Error reading: " << strerror(errno) << endl;;
         return 1;
     }
-    
-     cout << "Read " << num_bytes << " bytes Received message: "<< read_buf << endl; //Test the received log
 
      if(num_bytes > 0)
      {
-        DataLog::addLog(read_buf);
+        log = read_buf;
+        // cout << "Received message: "<< log << endl; //Test the received log
+        DataLog::addLog(log);
      }
 
     return 0;
 }
 
-void DataLog::addLog(char *log)
+void DataLog::addLog(string log)
 {
-    
+    cout << log << endl;
 }

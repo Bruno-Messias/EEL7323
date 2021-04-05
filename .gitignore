@@ -137,3 +137,5 @@ PoolControler/Proteus/Last Loaded PoolControler.pdsbak
 PoolControler/Datalog/Makefile
 *.json
 PoolControler/Datalog/DataLog
+PoolControler/Datalog/src/main
+PoolControler/Datalog/src/main

@@ -15,14 +15,16 @@
 using namespace std;
 
 class DataLog {
-    int serial_port;
+    string log;
 public:
+    int serial_port;
+
     DataLog() {}
     ~DataLog() {}
 
     int setInit();
     int readLog();
-    void addLog(char* log);
+    void addLog(string);
 };
 
     // add close(serial_port);
