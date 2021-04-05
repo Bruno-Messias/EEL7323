@@ -7,6 +7,6 @@ using namespace std;
 int main()
 {
     DataLog test;
-    cout << "Hello World!" << endl;
+    test.setInit();
     return 0;
 }
