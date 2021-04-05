@@ -255,14 +255,78 @@ void PoolControlerAtmega::createLog(char* event)
 	char ano_s[5], mes_s[3], dia_s[3], hora_s[3], min_s[3], sec_s[3]; 
 	char doublepoints[] = ":";
 	char backslash[] = "/";
+	char mes_c,dia_c,hora_c,min_c,sec_c;
+	
+	int mes_aux, dia_aux, hora_aux, min_aux, sec_aux = 0;
 	
 	/*-- Getting ClockCalendar Information --*/
 	itoa(cc.getAno(), ano_s, 10);
-	itoa(cc.getMes(), mes_s, 10);
-	itoa(cc.getDia(), dia_s, 10);
-	itoa(cc.getHora(), hora_s, 10);
-	itoa(cc.getMinuto(), min_s, 10);
-	itoa(cc.getSegundo(), sec_s, 10);
+	
+	//TODO: add a better function to concatenate information
+	mes_aux = cc.getMes();
+	if (mes_aux <= 9)
+	{
+		mes_c = '0' + mes_aux;
+		mes_s[0] = '0';
+		mes_s[1] =  mes_c;
+		mes_s[2] = '\0';
+	}
+	else 
+	{
+		itoa(mes_aux,mes_s,10);
+	}
+	
+	dia_aux = cc.getDia();
+	if (dia_aux <= 9)
+	{
+		dia_c = '0' + dia_aux;
+		dia_s[0] = '0';
+		dia_s[1] =  dia_c;
+		dia_s[2] = '\0';
+	}
+	else
+	{
+		itoa(dia_aux,dia_s,10);
+	}
+	
+	hora_aux = cc.getHora();
+	if (hora_aux <= 9)
+	{
+		hora_c = '0' + hora_aux;
+		hora_s[0] = '0';
+		hora_s[1] =  hora_c;
+		hora_s[2] = '\0';
+	}
+	else
+	{
+		itoa(hora_aux,hora_s,10);
+	}
+	
+	min_aux = cc.getMinuto();
+	if (min_aux <= 9)
+	{
+		min_c = '0' + min_aux;
+		min_s[0] = '0';
+		min_s[1] =  min_c;
+		min_s[2] = '\0';
+	}
+	else
+	{
+		itoa(min_aux,min_s,10);
+	}
+	//
+	sec_aux = cc.getSegundo();
+	if (sec_aux <= 9)
+	{
+		sec_c = '0' + sec_aux;
+		sec_s[0] = '0';
+		sec_s[1] =  sec_c;
+		sec_s[2] = '\0';
+	}
+	else
+	{
+		itoa(sec_aux,sec_s,10);
+	}
 	
 	/* -- Concatenating the string to store */
 	strcat(log, ano_s);
