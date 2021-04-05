@@ -1,4 +1,4 @@
-#include "include/DataLog.h"
+#include "DataLog.h"
 
 int DataLog::setInit()
 {
@@ -35,8 +35,8 @@ int DataLog::setInit()
     // tty.c_oflag &= ~OXTABS; // Prevent conversion of tabs to spaces (NOT PRESENT ON LINUX)
     // tty.c_oflag &= ~ONOEOT; // Prevent removal of C-d chars (0x004) in output (NOT PRESENT ON LINUX)
 
-    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-    tty.c_cc[VMIN] = 0;
+    tty.c_cc[VTIME] = 0;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+    tty.c_cc[VMIN] = 24;
 
     // Set in/out baud rate to be 9600
     cfsetispeed(&tty, B9600);
@@ -53,8 +53,7 @@ int DataLog::setInit()
 
 int DataLog::readLog() 
 {
-   char read_buf[256];
-   string log;
+    char read_buf[24];
 
     memset(&read_buf, '\0', sizeof(read_buf));
 
@@ -69,15 +68,15 @@ int DataLog::readLog()
 
      if(num_bytes > 0)
      {
-        log = read_buf;
-        // cout << "Received message: "<< log << endl; //Test the received log
-        DataLog::addLog(log);
+        // log = read_buf;
+        cout << "Received message: "<< read_buf << endl; //Test the received log
+        DataLog::addLog(read_buf);
      }
 
     return 0;
 }
 
-void DataLog::addLog(string log)
+void DataLog::addLog(char* read_buf)
 {
-    cout << log << endl;
+    lista.insertAfterLast(read_buf);
 }

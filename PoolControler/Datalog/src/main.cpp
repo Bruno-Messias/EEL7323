@@ -1,6 +1,6 @@
-#include <iostream>
 
-#include "include/DataLog.h"
+
+#include "DataLog.h"
 
 using namespace std;
 
@@ -12,6 +12,7 @@ int main()
     {
         test.readLog();
     }
+
     close(test.serial_port);
 
     return 0;

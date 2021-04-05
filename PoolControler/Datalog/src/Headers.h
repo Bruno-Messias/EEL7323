@@ -13,18 +13,3 @@
 #include <unistd.h> // write(), read(), close()
 
 using namespace std;
-
-class DataLog {
-    string log;
-public:
-    int serial_port;
-
-    DataLog() {}
-    ~DataLog() {}
-
-    int setInit();
-    int readLog();
-    void addLog(string);
-};
-
-    // add close(serial_port);
