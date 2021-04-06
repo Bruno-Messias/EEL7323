@@ -35,8 +35,8 @@ int DataLog::setInit()
     // tty.c_oflag &= ~OXTABS; // Prevent conversion of tabs to spaces (NOT PRESENT ON LINUX)
     // tty.c_oflag &= ~ONOEOT; // Prevent removal of C-d chars (0x004) in output (NOT PRESENT ON LINUX)
 
-    tty.c_cc[VTIME] = 0;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-    tty.c_cc[VMIN] = 24;
+    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+    tty.c_cc[VMIN] = 23;
 
     // Set in/out baud rate to be 9600
     cfsetispeed(&tty, B9600);
@@ -68,15 +68,111 @@ int DataLog::readLog()
 
      if(num_bytes > 0)
      {
-        // log = read_buf;
-        cout << "Received message: "<< read_buf << endl; //Test the received log
-        DataLog::addLog(read_buf);
+        log = read_buf;
+        cout << "Received message: "<< log << endl; //Test the received log
+        DataLog::conversionLog(log);
      }
 
     return 0;
 }
 
-void DataLog::addLog(char* read_buf)
+void DataLog::conversionLog(string readLog)
 {
-    lista.insertAfterLast(read_buf);
+    string delimiter = "/";
+
+    size_t pos = 0;
+    string token;
+    
+    string id_s;
+    string clockCalendar;
+    string event_s;
+
+    string year_s, month_s, day_s, hour_s, min_s, sec_s;
+    char event;
+    int id;
+
+    //First Iteration to split the "/" delimeter
+    int i = 0;
+    while ((pos = readLog.find(delimiter)) != string::npos) {
+        token = readLog.substr(0, pos);
+        i++;
+        if(i == 1)
+            id_s = token;
+        if(i == 2)
+            clockCalendar = token;
+
+        readLog.erase(0, pos + delimiter.length());
+    }
+    event_s = readLog;
+
+    //Second Iteration to split the ":" delimeter
+    delimiter = ":";
+    pos = 0;
+    
+    i = 0;
+    while ((pos = clockCalendar.find(delimiter)) != string::npos) {
+        token = clockCalendar.substr(0, pos);
+        i++;
+        if(i == 1)
+            year_s = token;
+        if(i == 2)
+            month_s = token;
+        if(i == 3)
+            day_s = token;
+        if(i == 4)
+            hour_s = token;
+        if(i == 5)
+            min_s = token;
+
+        clockCalendar.erase(0, pos + delimiter.length());
+    }
+    sec_s = clockCalendar;
+
+    //Handle Parse data Error convertion ID
+    try{
+        id = stoi(id_s);
+    }
+    catch(exception &err)
+    {
+        cout <<"Conversion failure: "<< err.what() << endl;
+        id = -1;
+    }
+
+    //Handle Parse data Error convertion Event
+    try{
+        event = event_s[0];
+    }
+    catch(exception &err){
+        cout <<"Conversion failure: "<< err.what() << endl;
+        event = '0';
+    }
+    
+    //Test receiver elements
+    if((id != 1) || (event == '0'))
+    {
+        cout << "Data Corrupted - Log doest stored!" << endl; 
+    }
+    else if ((event == 'a')||(event =='b')||(event == 'c'))
+    {
+        cout << "Log Stored" << endl;
+        DataLog::addLog(id, year_s, month_s, day_s, hour_s, min_s, sec_s, event);
+    }
+    else
+    {
+        cout << "Data Corrupted - Log doest stored!" << endl; 
+    }
+}
+
+void DataLog::addLog(int id, string year_s, string month_s, string day_s, string hour_s, string min_s, string sec_s, char event)
+{
+    int year, month, day, hour, min, sec;
+
+    year = stoi(year_s);
+    month = stoi(month_s);
+    day = stoi(day_s);
+    hour = stoi(hour_s);
+    min = stoi(min_s);
+    sec = stoi(sec_s);
+
+    lista.insertAfterLast(year,month,day,hour,min,sec,event);
 }

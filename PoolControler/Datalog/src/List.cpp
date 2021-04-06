@@ -15,37 +15,38 @@ List::~List() {
 	head = 0; // Officially empty
 }
 
-void List::insertAfterLast(char* dat) {
+void List::insertAfterLast(int newYear, int newMonth, int newDay, int newHour, int newMin, int newSec, char newEvent)
+ {
 	Node* p = head;
 	Node* q = head;
 
 	if (head == 0)
-		head = new Node(dat, head);
+		head = new Node(newYear,newMonth, newDay, newHour, newMin, newSec, newEvent, head);
 		
-	else {
-		while (q != 0) {
+	else 
+	{
+		while (q != 0) 
+		{
 			p = q;
 			q = p->getNext();
 		}
-		p->setNext(new Node(dat, 0));
+		p->setNext(new Node(newYear,newMonth, newDay, newHour, newMin, newSec, newEvent, 0));
 	}
 }
 
-char* List::removeFirst() {
-	char *retval = 0;
+void List::removeFirst() 
+{
 	if (head != 0) {
-		retval = head->getVal();
 		Node* oldHead = head;
 		head = head->getNext();
 		delete oldHead;
 	}
-	return retval;
 }
 
 void List::listAll() {
   Node* aux = head;
   while (aux != 0){
-     cout << aux->getVal() << endl;
+     cout << aux->getEvent() << endl;
      aux = aux->getNext();
   }
 }

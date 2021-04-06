@@ -6,8 +6,8 @@ class List {
 public:
     List();
     ~List();
-    void insertAfterLast(char* dat);
-    char* removeFirst();
+    void insertAfterLast(int newYear, int newMonth, int newDay, int newHour, int newMin, int newSec, char newEvent);
+    void removeFirst();
     char* removeNode(char* dat);
     void listAll();
 };

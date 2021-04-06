@@ -1,14 +1,50 @@
 #include "Node.h"
 
 // Constructor - initializes the node
-Node::Node(char* dat, Node* nxt) {
-    val = dat;
+Node::Node(int newYear, int newMonth, int newDay, int newHour, int newMin, int newSec, char newEvent ,Node* nxt) {
+    year = newYear;
+    month = newMonth;
+    day = newDay;
+    hour = newHour;
+    min = newMin;
+    sec = newSec;
+    event = newEvent;
     next = nxt;
 }
 
-// getVal returns the integer value stored in the node
-char* Node::getVal() {
-    return val;
+int Node::getYear()
+{
+    return year;
+}
+
+int Node::getMonth()
+{
+    return month;
+}
+
+int Node::getDay()
+{
+    return day;
+}
+
+int Node::getHour()
+{
+    return hour;
+}
+
+int Node::getMin()
+{
+    return min;
+}
+
+int Node::getSec()
+{
+    return sec;
+}
+
+char Node::getEvent()
+{
+    return event;
 }
 
 // getNext returns a pointer for the next node in the linked list

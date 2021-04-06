@@ -1,10 +1,22 @@
 
+
+using namespace std;
+
 class Node {
-    char *val;
+    int id,year,month,day,hour,min,sec;
+    char event;
     Node* next;
 public:
-    Node(char* val, Node* nxt);
-    char* getVal();
+    Node(int newYear, int newMonth, int newDay, int newHour, int newMin, int newSec, char newEvent ,Node* nxt);
+
+    int getYear();
+    int getMonth();
+    int getDay();
+    int getHour();
+    int getMin();
+    int getSec();
+    char getEvent();
+
     Node* getNext();
     void setNext(Node* nxt);
 };

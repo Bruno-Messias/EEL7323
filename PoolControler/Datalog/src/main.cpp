@@ -11,6 +11,7 @@ int main()
     while(1)
     {
         test.readLog();
+        test.lista.listAll();
     }
 
     close(test.serial_port);
