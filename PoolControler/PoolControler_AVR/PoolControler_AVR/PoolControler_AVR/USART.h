@@ -4,8 +4,8 @@
 #define MYUBBR F_CPU/16/BAUD-1
 
 /* USART Buffer Defines */
-#define USART_RX_BUFFER_SIZE 8     /* 2,4,8,16,32,64,128 or 256 bytes */
-#define USART_TX_BUFFER_SIZE 8     /* 2,4,8,16,32,64,128 or 256 bytes */
+#define USART_RX_BUFFER_SIZE 256     /* 2,4,8,16,32,64,128 or 256 bytes */
+#define USART_TX_BUFFER_SIZE 256     /* 2,4,8,16,32,64,128 or 256 bytes */
 #define USART_RX_BUFFER_MASK (USART_RX_BUFFER_SIZE - 1)
 #define USART_TX_BUFFER_MASK (USART_TX_BUFFER_SIZE - 1)
 
