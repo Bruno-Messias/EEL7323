@@ -1,3 +1,10 @@
+//Pins Avr
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+#define F_CPU 16000000
+
+#include <util/delay.h>
 
 //-- For using USART
 #define BAUD 9600
@@ -5,7 +12,7 @@
 
 /* USART Buffer Defines */
 #define USART_RX_BUFFER_SIZE 256     /* 2,4,8,16,32,64,128 or 256 bytes */
-#define USART_TX_BUFFER_SIZE 256     /* 2,4,8,16,32,64,128 or 256 bytes */
+#define USART_TX_BUFFER_SIZE 256    /* 2,4,8,16,32,64,128 or 256 bytes */
 #define USART_RX_BUFFER_MASK (USART_RX_BUFFER_SIZE - 1)
 #define USART_TX_BUFFER_MASK (USART_TX_BUFFER_SIZE - 1)
 

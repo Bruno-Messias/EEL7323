@@ -1,6 +1,8 @@
 
 #include "Node.cpp"
 
+
+/*------------------- Adding operator new and delete to avr-gcc ----------------*/
 extern "C++" {
 	namespace std
 	{
@@ -22,6 +24,7 @@ extern "C++" {
 	inline void  operator delete  (void*, void*) throw() { }
 	inline void  operator delete[](void*, void*) throw() { }
 }
+/*-------------------------------------------------------------------------------*/
 
 class List {
     Node* head;

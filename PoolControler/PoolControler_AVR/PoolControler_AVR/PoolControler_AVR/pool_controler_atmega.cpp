@@ -1,7 +1,5 @@
 #include "pool_controler_atmega.h"
 
-//Chabge pump and heater
-
 PoolControlerAtmega::PoolControlerAtmega()
 {
     estate = 0; // control the actual estate
@@ -27,9 +25,9 @@ PoolControlerAtmega::PoolControlerAtmega()
 	rst_bit(PCICR, PCIE0);					// Disable Interrupt
 	
 	led.MAX7219_INIT();						//Initiate MAx7239
-	cc.setCalendar(2021,4,1,0,0,0);			//Set ClockCalendar for 1/4/2021 00:00:00
+	cc.setCalendar(2021,4,1,0,0,5);			//Set ClockCalendar for 1/4/2021 00:00:00
 	
-	/* -- Initiate with 9600 Baudrate --*/
+	/* -- Initiate with 9600 BaudRate --*/
 	USART0_Init(MYUBBR);
 	sei();
 }
@@ -226,27 +224,29 @@ void PoolControlerAtmega::displayTimer() //Send information to the log
 
 void PoolControlerAtmega::checkLog() //Check for Event to store a log
 {
-	char event[] = "";
+	char event[3];
 	
 	if(estate == 5)					//Check for timeout
 	{
-		char event_log[] = "a\n";
-		strcat(event, event_log);
-		PoolControlerAtmega::createLog(event);
+		event[0] = '/';
+		event[1] = 'a';
+		event[2] = '\0';
+		
 	}
 	else if(estate == 0 && flag)	//Check reset timer
 	{
-		char event_log[] = "c\n";
-		strcat(event, event_log);
-		PoolControlerAtmega::createLog(event);
+		event[0] = '/';
+		event[1] = 'c';
+		event[2] = '\0';
 	}
 	else if(init)					//Check for initialization of system
 	{
-		char event_log[] = "b\n";
-		strcat(event, event_log);
-		PoolControlerAtmega::createLog(event);
+		event[0] = '/';
+		event[1] = 'b';
+		event[2] = '\0';
 	}
 	
+	PoolControlerAtmega::createLog(event);
 }
 
 void PoolControlerAtmega::createLog(char* event)
@@ -254,15 +254,84 @@ void PoolControlerAtmega::createLog(char* event)
 	char log[] = "1/";
 	char ano_s[5], mes_s[3], dia_s[3], hora_s[3], min_s[3], sec_s[3]; 
 	char doublepoints[] = ":";
-	char backslash[] = "/";
+	char slash[] = "/";
+	char null[] = "0";
 	
-	/*-- Getting ClockCalendar Information --*/
+	char mes_c,dia_c,hora_c,min_c,sec_c;
+	
+	int mes_aux, dia_aux, hora_aux, min_aux, sec_aux = 0;
+	
+	//TODO: add a better function to concatenate information
+	
+	/* -- Getting ClockCalendar Information -- */
 	itoa(cc.getAno(), ano_s, 10);
-	itoa(cc.getMes(), mes_s, 10);
-	itoa(cc.getDia(), dia_s, 10);
-	itoa(cc.getHora(), hora_s, 10);
-	itoa(cc.getMinuto(), min_s, 10);
-	itoa(cc.getSegundo(), sec_s, 10);
+	
+	
+	mes_aux = cc.getMes();
+	if (mes_aux <= 9)
+	{
+		mes_c = '0' + mes_aux;
+		mes_s[0] = '0';
+		mes_s[1] =  mes_c;
+		mes_s[2] = '\0';
+	}
+	else 
+	{
+		itoa(mes_aux,mes_s,10);
+	}
+	
+	dia_aux = cc.getDia();
+	if (dia_aux <= 9)
+	{
+		dia_c = '0' + dia_aux;
+		dia_s[0] = '0';
+		dia_s[1] =  dia_c;
+		dia_s[2] = '\0';
+	}
+	else
+	{
+		itoa(dia_aux,dia_s,10);
+	}
+	
+	hora_aux = cc.getHora();
+	if (hora_aux <= 9)
+	{
+		hora_c = '0' + hora_aux;
+		hora_s[0] = '0';
+		hora_s[1] =  hora_c;
+		hora_s[2] = '\0';
+	}
+	else
+	{
+		itoa(hora_aux,hora_s,10);
+	}
+	
+	min_aux = cc.getMinuto();
+	if (min_aux <= 9)
+	{
+		min_c = '0' + min_aux;
+		min_s[0] = '0';
+		min_s[1] =  min_c;
+		min_s[2] = '\0';
+	}
+	else
+	{
+		itoa(min_aux,min_s,10);
+	}
+	//
+	sec_aux = cc.getSegundo();
+	
+	if (sec_aux <= 9)
+	{
+		sec_c = '0' + sec_aux;
+		sec_s[0] = '0';
+		sec_s[1] =  sec_c;
+		sec_s[2] = '\0';
+	}
+	else
+	{
+		itoa(sec_aux,sec_s,10);
+	}
 	
 	/* -- Concatenating the string to store */
 	strcat(log, ano_s);
@@ -276,8 +345,9 @@ void PoolControlerAtmega::createLog(char* event)
 	strcat(log, min_s);
 	strcat(log, doublepoints);
 	strcat(log, sec_s);
-	strcat(log, backslash);
+	strcat(log,slash);
 	strcat(log, event);
+	strcat(log,null);
 	
 	data.insertAfterLast(log); //Store the log in the data structure
 }
