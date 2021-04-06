@@ -69,7 +69,6 @@ int DataLog::readLog()
      if(num_bytes > 0)
      {
         log = read_buf;
-        cout << "Received message: "<< log << endl; //Test the received log
         DataLog::conversionLog(log);
      }
 
@@ -154,7 +153,6 @@ void DataLog::conversionLog(string readLog)
     }
     else if ((event == 'a')||(event =='b')||(event == 'c'))
     {
-        cout << "Log Stored" << endl;
         DataLog::addLog(id, year_s, month_s, day_s, hour_s, min_s, sec_s, event);
     }
     else
@@ -166,13 +164,135 @@ void DataLog::conversionLog(string readLog)
 void DataLog::addLog(int id, string year_s, string month_s, string day_s, string hour_s, string min_s, string sec_s, char event)
 {
     int year, month, day, hour, min, sec;
+    bool error = false;
 
-    year = stoi(year_s);
-    month = stoi(month_s);
-    day = stoi(day_s);
-    hour = stoi(hour_s);
-    min = stoi(min_s);
-    sec = stoi(sec_s);
+    //Year Error handle
+    try
+    {
+       year = stoi(year_s);
+    }
+    catch(exception &err)
+    {
+        cout <<"Conversion failure: "<< err.what() << endl;
+        error = true;
+    }
+    //Month Error handle
+    try
+    {
+       month = stoi(month_s);
+    }
+    catch(exception &err)
+    {
+        cout <<"Conversion failure: "<< err.what() << endl;
+        error = true;
+    }
+     //Day Error handle
+    try
+    {
+       day = stoi(day_s);
+    }
+    catch(exception &err)
+    {
+        cout <<"Conversion failure: "<< err.what() << endl;
+        error = true;
+    }
+    //Hour Error handle
+    try
+    {
+       hour = stoi(hour_s);
+    }
+    catch(exception &err)
+    {
+        cout <<"Conversion failure: "<< err.what() << endl;
+        error = true;
+    }
+    //Minute Error handle
+    try
+    {
+       min = stoi(min_s);
+    }
+    catch(exception &err)
+    {
+        cout <<"Conversion failure: "<< err.what() << endl;
+        error = true;
+    }
+    //Sec Error handle
+    try
+    {
+       sec = stoi(sec_s);
+    }
+    catch(exception &err)
+    {
+        cout <<"Conversion failure: "<< err.what() << endl;
+        error = true;
+    }
+    
+    if(error)
+    {
+        cout << "Data Corrupted - Log doest stored!" << endl; 
+    }
+    else
+    {
+        cout << "Log Stored!" << endl;
+        lista.insertAfterLast(year,month,day,hour,min,sec,event);
+    }
+    
+}
 
-    lista.insertAfterLast(year,month,day,hour,min,sec,event);
+void DataLog::listEvents()
+{
+    
+    cout << "The last 10 Events was: " << endl;
+    usleep(2000);
+}
+
+void DataLog::totalTime()
+{
+    cout << "Total Time used in the last 7 day: " << endl;
+    usleep(1000);
+}
+
+void DataLog::mostUsedDay()
+{
+    cout << "Most Used day in the last 7 days: " << endl;
+    usleep(1000);
+}
+
+void DataLog::displayMenu()
+{
+    system("clear");
+    cout << "---- Datalog System ----" << endl;
+    cout << "Press 1 to list the last 10 logs" << endl;
+    cout << "Press 2 to the total time turned on on the last 7 days" << endl;
+    cout << "Press 3 to the most used day in the last 7 days" << endl;
+    cout << "Press 4 to exit the program" << endl;
+}
+
+void DataLog::interruptFunction()
+{
+    int key_nb;
+
+    if(key.kbhit())
+        {
+            system("clear");
+            key_nb = key.getch(); 
+
+            switch (key_nb)
+            {
+            case 49:
+                DataLog::listEvents();
+                break;
+            case 50:
+                DataLog::totalTime();
+                break;
+            case 51:
+                DataLog::mostUsedDay();
+                break;
+            case 52:
+                exit(0);
+            default:
+                cout << "Invalid Selection, try again" << endl;
+                break;
+            }
+        }
 }

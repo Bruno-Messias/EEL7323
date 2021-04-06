@@ -6,15 +6,17 @@ using namespace std;
 
 int main()
 {
-    DataLog test;
-    test.setInit();
+    DataLog host;
+    host.setInit();
+    
     while(1)
     {
-        test.readLog();
-        test.lista.listAll();
+        host.readLog();
+        host.displayMenu();
+        host.interruptFunction();
     }
 
-    close(test.serial_port);
+    close(host.serial_port);
 
     return 0;
 }
