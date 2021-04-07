@@ -109,25 +109,25 @@ void List::mostUsedDay() {
 
 	while (aux != 0)
 	{
-		if ((aux->getEvent() == 'c') || (aux->getEvent() == 'b'))
+		if ((aux->getEvent() == 'c') || (aux->getEvent() == 'b'))	//compare if an event occur
 		{
-			if (counter == 0)
+			if (counter == 0)										//Initialization of the counter
 			{
 				most_used = aux;
 				counter++;
 			}
 			else
 			{
-				if ((aux->getMonth() != most_used->getMonth()) || (aux->getDay() != most_used->getDay()))
+				if ((aux->getMonth() != most_used->getMonth()) || (aux->getDay() != most_used->getDay())) //Compare for the actual date
 				{
-					if (compare == 0)
+					if (compare == 0)								//Initialization of compare and actual date
 					{
 						actual = aux;
 						compare++;
 					}
 					else
 					{
-						if ((aux->getMonth() != actual->getMonth()) || (aux->getDay() != actual->getDay()) )
+						if ((aux->getMonth() != actual->getMonth()) || (aux->getDay() != actual->getDay()))	//Compare the change of the actual date
 						{
 							actual = aux;
 							compare = 1;
@@ -136,7 +136,7 @@ void List::mostUsedDay() {
 						{
 							compare++;
 
-							if (compare > counter)
+							if (compare > counter)			//Update the most used day
 							{
 								counter = compare;
 								most_used = actual;

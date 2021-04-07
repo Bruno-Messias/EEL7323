@@ -2,10 +2,10 @@
 
 int DataLog::setInit()
 {
-    // Open the serial port. Change device path as needed (currently set to an standard FTDI USB-UART cable type device)
+    // Open the serial port
     serial_port = open("/dev/ttyACM0", O_RDWR);
 
-    // Create new termios struc, we call it 'tty' for convention
+    // Create new termios struc for termios handle
     struct termios tty;
 
     // Read in existing settings, and handle any error
@@ -30,13 +30,11 @@ int DataLog::setInit()
     tty.c_iflag &= ~(IXON | IXOFF | IXANY); // Turn off s/w flow ctrl
     tty.c_iflag &= ~(IGNBRK|BRKINT|PARMRK|ISTRIP|INLCR|IGNCR|ICRNL); // Disable any special handling of received bytes
 
-    tty.c_oflag &= ~OPOST; // Prevent special interpretation of output bytes (e.g. newline chars)
-    tty.c_oflag &= ~ONLCR; // Prevent conversion of newline to carriage return/line feed
-    // tty.c_oflag &= ~OXTABS; // Prevent conversion of tabs to spaces (NOT PRESENT ON LINUX)
-    // tty.c_oflag &= ~ONOEOT; // Prevent removal of C-d chars (0x004) in output (NOT PRESENT ON LINUX)
+    tty.c_oflag &= ~OPOST;  // Prevent special interpretation of output bytes (e.g. newline chars)
+    tty.c_oflag &= ~ONLCR;  // Prevent conversion of newline to carriage return/line feed
 
-    tty.c_cc[VTIME] = 10;    // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
-    tty.c_cc[VMIN] = 23;
+    tty.c_cc[VTIME] = 10;   // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
+    tty.c_cc[VMIN] = 23;    // Wait for 23 bytes of the string for the log 
 
     // Set in/out baud rate to be 9600
     cfsetispeed(&tty, B9600);
@@ -55,18 +53,18 @@ int DataLog::readLog()
 {
     char read_buf[24];
 
-    memset(&read_buf, '\0', sizeof(read_buf));
+    memset(&read_buf, '\0', sizeof(read_buf));      //Allocating memory for the buffer receiver
 
     //Getting number of bytes received to check if is something to read
     int num_bytes = read(serial_port, &read_buf, sizeof(read_buf));
 
-    if (num_bytes < 0)
+    if (num_bytes < 0)                              //Check For error in receiver
     {
         cout << "Error reading: " << strerror(errno) << endl;;
         return 1;
     }
 
-     if(num_bytes > 0)
+     if(num_bytes > 0)                              //Check If is something tho read
      {
         log = read_buf;
         DataLog::conversionLog(log);
@@ -90,7 +88,7 @@ void DataLog::conversionLog(string readLog)
     char event;
     int id;
 
-    //First Iteration to split the "/" delimeter
+    //First Iteration to split the "/" delimeter(ID/ClockCalendar/Event)
     int i = 0;
     while ((pos = readLog.find(delimiter)) != string::npos) {
         token = readLog.substr(0, pos);
@@ -104,7 +102,7 @@ void DataLog::conversionLog(string readLog)
     }
     event_s = readLog;
 
-    //Second Iteration to split the ":" delimeter
+    //Second Iteration to split the ":" delimeter(clockCalendar)
     delimiter = ":";
     pos = 0;
     
@@ -166,7 +164,7 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
     int year, month, day, hour, min, sec;
     bool error = false;
 
-    //Year Error handle
+    // -------- Year Error handle
     try
     {
        year = stoi(year_s);
@@ -176,7 +174,8 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
         cout <<"Conversion failure: "<< err.what() << endl;
         error = true;
     }
-    //Month Error handle
+
+    // -------- Month Error handle
     try
     {
        month = stoi(month_s);
@@ -186,7 +185,8 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
         cout <<"Conversion failure: "<< err.what() << endl;
         error = true;
     }
-     //Day Error handle
+
+     // -------- Day Error handle
     try
     {
        day = stoi(day_s);
@@ -196,7 +196,8 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
         cout <<"Conversion failure: "<< err.what() << endl;
         error = true;
     }
-    //Hour Error handle
+
+    // -------- Hour Error handle
     try
     {
        hour = stoi(hour_s);
@@ -206,7 +207,8 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
         cout <<"Conversion failure: "<< err.what() << endl;
         error = true;
     }
-    //Minute Error handle
+
+    // -------- Minute Error handle
     try
     {
        min = stoi(min_s);
@@ -216,7 +218,8 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
         cout <<"Conversion failure: "<< err.what() << endl;
         error = true;
     }
-    //Sec Error handle
+
+    // -------- Sec Error handle
     try
     {
        sec = stoi(sec_s);
@@ -227,7 +230,7 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
         error = true;
     }
     
-    if(error)
+    if(error) //Checks for conversion Errors
     {
         cout << "Data Corrupted - Log doest stored!" << endl; 
     }
@@ -241,7 +244,6 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
 
 void DataLog::listEvents()
 {
-    //TODO: Implement year and month check
     int min_day, max_day;
     cout << "Select the Minimun day: " << endl;
     cin >> min_day;
@@ -287,15 +289,16 @@ void DataLog::interruptFunction()
             switch (key_nb)
             {
             case 49:
-                DataLog::listEvents();
+                DataLog::listEvents();  //Return the list of day in the range from the user
                 break;
             case 50:
-                DataLog::totalTime();
+                DataLog::totalTime();   //Return the total time that the system is on
                 break;
             case 51:
-                DataLog::mostUsedDay();
+                DataLog::mostUsedDay(); //Return the most used day
                 break;
             case 52:
+                close(serial_port);
                 exit(0);
             default:
                 cout << "Invalid Selection, try again" << endl;

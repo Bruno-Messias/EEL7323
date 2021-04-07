@@ -5,13 +5,12 @@
 #include <string>
 
 class DataLog {
-    string log;
+    string log;        
     keyboard key;
-public:
-    bool flag;
-
     List lista;
     int serial_port;
+public:
+    bool flag;
 
     DataLog() {}
     ~DataLog() {}
