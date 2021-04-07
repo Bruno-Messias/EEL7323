@@ -241,31 +241,37 @@ void DataLog::addLog(int id, string year_s, string month_s, string day_s, string
 
 void DataLog::listEvents()
 {
+    //TODO: Implement year and month check
+    int min_day, max_day;
+    cout << "Select the Minimun day: " << endl;
+    cin >> min_day;
+    cout << "Select the Maximun day: " << endl;
+    cin >> max_day;
     
-    cout << "The last 10 Events was: " << endl;
-    usleep(2000);
+    lista.listLogs(max_day, min_day);
 }
 
 void DataLog::totalTime()
 {
-    cout << "Total Time used in the last 7 day: " << endl;
-    usleep(1000);
+    cout << "Total Time used: "  << lista.displayTotalTime() << endl;
 }
 
 void DataLog::mostUsedDay()
 {
-    cout << "Most Used day in the last 7 days: " << endl;
-    usleep(1000);
+    cout << "Most Used day is: "<< endl;
+    lista.mostUsedDay();
 }
 
 void DataLog::displayMenu()
 {
-    system("clear");
-    cout << "---- Datalog System ----" << endl;
-    cout << "Press 1 to list the last 10 logs" << endl;
-    cout << "Press 2 to the total time turned on on the last 7 days" << endl;
-    cout << "Press 3 to the most used day in the last 7 days" << endl;
+    cout << endl;
+    cout << "------------ Welcome to the Datalog System --------------------" << endl;
+    cout << "Press 1 to list the logs" << endl;
+    cout << "Press 2 to the total time the system turned on" << endl;
+    cout << "Press 3 to the most used day" << endl;
     cout << "Press 4 to exit the program" << endl;
+    cout << "---------------------------------------------------------------" << endl;
+    cout << endl;
 }
 
 void DataLog::interruptFunction()
@@ -276,6 +282,7 @@ void DataLog::interruptFunction()
         {
             system("clear");
             key_nb = key.getch(); 
+            flag = true;
 
             switch (key_nb)
             {

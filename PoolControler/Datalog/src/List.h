@@ -10,4 +10,8 @@ public:
     void removeFirst();
     char* removeNode(char* dat);
     void listAll();
+    void listLogs(int max_day, int min_day);
+    void printLog(Node *aux);
+    float displayTotalTime();
+    void mostUsedDay();
 };

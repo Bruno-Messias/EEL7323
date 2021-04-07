@@ -8,6 +8,8 @@ class DataLog {
     string log;
     keyboard key;
 public:
+    bool flag;
+
     List lista;
     int serial_port;
 
