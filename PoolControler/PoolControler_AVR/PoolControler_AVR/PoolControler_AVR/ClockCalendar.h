@@ -184,7 +184,7 @@ void Hora::setSegundo(int newSegundo) {
 }
 
 class ClockCalendar: public Hora {
-	int newAno, newMes, newDia, newHora, newMinuto, newSegundo;
+	
 public:
 	void advance();
 	void setCalendar(int newAno, int newMes, int newDia, int newHora,int newMinuto, int newSegundo);
